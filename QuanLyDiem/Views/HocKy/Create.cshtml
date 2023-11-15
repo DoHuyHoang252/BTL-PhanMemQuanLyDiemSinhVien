@@ -1,0 +1,42 @@
+@model QuanLyDiem.Models.HocKy
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>HocKy</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MaKhoaHoc" class="control-label"></label>
+                <select asp-for="MaKhoaHoc" class ="form-control" asp-items="ViewBag.MaKhoaHoc"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaHocKy" class="control-label"></label>
+                <input asp-for="MaHocKy" class="form-control" />
+                <span asp-validation-for="MaHocKy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TenHocKy" class="control-label"></label>
+                <input asp-for="TenHocKy" class="form-control" />
+                <span asp-validation-for="TenHocKy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

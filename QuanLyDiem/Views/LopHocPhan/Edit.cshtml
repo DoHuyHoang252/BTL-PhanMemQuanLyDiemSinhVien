@@ -1,0 +1,49 @@
+@model QuanLyDiem.Models.LopHocPhan
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>LopHocPhan</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MaLopHocPhan" />
+            <div class="form-group">
+                <label asp-for="TenLopHocPhan" class="control-label"></label>
+                <input asp-for="TenLopHocPhan" class="form-control" />
+                <span asp-validation-for="TenLopHocPhan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaHocPhan" class="control-label"></label>
+                <select asp-for="MaHocPhan" class="form-control" asp-items="ViewBag.MaHocPhan"></select>
+                <span asp-validation-for="MaHocPhan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaGiangVien" class="control-label"></label>
+                <select asp-for="MaGiangVien" class="form-control" asp-items="ViewBag.MaGiangVien"></select>
+                <span asp-validation-for="MaGiangVien" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaHocKy" class="control-label"></label>
+                <select asp-for="MaHocKy" class="form-control" asp-items="ViewBag.MaHocKy"></select>
+                <span asp-validation-for="MaHocKy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

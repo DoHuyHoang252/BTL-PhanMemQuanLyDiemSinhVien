@@ -1,0 +1,66 @@
+@model IEnumerable<QuanLyDiem.Models.BangDiem>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Bảng điểm sinh viên</h1>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="w3-center"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Tạo mới bảng điểm</a></div>
+
+                <div class="table-responsive m-t-40 ">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)">
+                                    Sinh viên
+                                </th>
+                                <th onclick="sortTable(1)">
+                                    Học phần
+                                </th>
+                                <th onclick="sortTable(2)">
+                                    Điểm chuyên cần
+                                </th>
+                                <th onclick="sortTable(3)">
+                                    Điểm kiểm tra
+                                </th>
+                                <th onclick="sortTable(4)">
+                                    Điểm thi
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    @foreach (var item in Model) {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SinhVien.TenSinhVien)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HocPhan.TenHocPhan)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiemChuyenCan)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiemKiemTra)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiemThi)
+                                </td>
+                                <td>
+                                    <a class="btn btn-outline-info w3-round-large" asp-action="Edit" asp-route-id="@item.MaBangDiem">Sửa</a>
+                                    <a class="btn btn-outline-info w3-round-large" asp-action="Delete" asp-route-id="@item.MaBangDiem">Xóa</a>
+                                </td>
+                            </tr>
+                    }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
