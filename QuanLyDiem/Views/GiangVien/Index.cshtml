@@ -4,56 +4,65 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Giảng viên</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TenGiangVien)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GioiTinh)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgaySinh)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Khoa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ChuyenNganh)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenGiangVien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GioiTinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgaySinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Khoa.MaKhoa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChuyenNganh.MaChuyenNganh)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaGiangVien">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaGiangVien">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaGiangVien">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="w3-center"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Thêm mới giảng viên</a></div>
+
+                <div class="table-responsive m-t-40 ">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)">
+                                    Tên giảng viên
+                                </th>
+                                <th onclick="sortTable(1)">
+                                    Giới tính
+                                </th>
+                                <th onclick="sortTable(2)">
+                                    Ngày sinh
+                                </th>
+                                <th onclick="sortTable(3)">
+                                    Khoa
+                                </th>
+                                <th onclick="sortTable(4)">
+                                    Chuyên ngành
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    @foreach (var item in Model) {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenGiangVien)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GioiTinh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NgaySinh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Khoa.MaKhoa)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChuyenNganh.MaChuyenNganh)
+                                </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.MaGiangVien">Sửa</a> |
+                                <a asp-action="Details" asp-route-id="@item.MaGiangVien">Hiển thị</a> |
+                                <a asp-action="Delete" asp-route-id="@item.MaGiangVien">Xóa</a>
+                            </td>
+                            </tr>
+                    }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

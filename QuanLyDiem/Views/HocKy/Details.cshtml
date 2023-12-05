@@ -4,27 +4,32 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Hiển thị</h1>
 
 <div>
-    <h4>HocKy</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.KhoaHoc)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.KhoaHoc.MaKhoaHoc)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenHocKy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenHocKy)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.MaHocKy">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <dl class="w3-card w3-white container" style="width:60%">
+        <div class="row">
+                <dt class = "col-sm-6">
+                    Khóa học
+                </dt>
+                <dd class = "col-sm-6">
+                    @Html.DisplayFor(model => model.KhoaHoc.MaKhoaHoc)
+                </dd>
+            </div>
+            <div class="row">
+                <dt class = "col-sm-6">
+                    Tên học kỳ
+                </dt>
+                <dd class = "col-sm-6">
+                    @Html.DisplayFor(model => model.TenHocKy)
+                </dd>
+            </div>
+        </div>
+    </dl>    
+    <form class="w3-center" asp-action="Details">
+        <input type="hidden" asp-for="MaHocKy" />
+        <input type="submit" value="Hiển thị" class="btn btn-danger" /> |
+        <a asp-action="Index">Hủy</a>
+    </form>
 </div>

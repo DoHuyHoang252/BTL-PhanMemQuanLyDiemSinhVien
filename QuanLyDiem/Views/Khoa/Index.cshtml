@@ -4,31 +4,39 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Khoa</h1>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+            <div class="w3-center"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Thêm mới khoa</a></div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TenKhoa)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenKhoa)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaKhoa">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaKhoa">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                <div class="table-responsive m-t-40 ">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(1)">
+                                    Tên khoa
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    @foreach (var item in Model) {
+                             <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenKhoa)
+                                </td>
+                             <td>
+                                <a class="btn btn-outline-info w3-round-large" asp-action="Edit" asp-route-id="@item.MaKhoa">Sửa</a>
+                                <a class="btn btn-outline-info w3-round-large" asp-action="Delete" asp-route-id="@item.MaKhoa">Xóa</a>
+                             </td>
+                             </tr>       
+                    }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,35 +4,29 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Sửa</h1>
 
-<h4>HocKy</h4>
+<h4>Học kỳ</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="w3-card w3-white container" style="width:60%;">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="MaKhoaHoc" class="control-label"></label>
-                <select asp-for="MaKhoaHoc" class="form-control" asp-items="ViewBag.MaKhoaHoc"></select>
-                <span asp-validation-for="MaKhoaHoc" class="text-danger"></span>
-            </div>
+            <h4 class="w3-center">Nhập thông tin cần sửa</h4>
             <input type="hidden" asp-for="MaHocKy" />
             <div class="form-group">
-                <label asp-for="TenHocKy" class="control-label"></label>
+                <label class="control-label">Mã khóa học</label>
+                <select asp-for="MaKhoaHoc" class ="form-control" asp-items="ViewBag.MaKhoaHoc"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Tên học kỳ</label>
                 <input asp-for="TenHocKy" class="form-control" />
                 <span asp-validation-for="TenHocKy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Lưu" class="btn btn-outline-info" /> |
+                <a asp-action="Index">Trở về</a>
             </div>
         </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
