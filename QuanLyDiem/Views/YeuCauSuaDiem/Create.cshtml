@@ -4,63 +4,54 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h3>Tạo yêu cầu sửa điểm</h3>
 
-<h4>YeuCauSuaDiem</h4>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class=" w3-card w3-white container w3-round-large" style="width:50%">
         <form asp-action="Create">
+            <h4 class="w3-center">Nhập thông tin yêu cầu</h4>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="MaGiangVien" class="control-label"></label>
-                <select asp-for="MaGiangVien" class ="form-control" asp-items="ViewBag.MaGiangVien"></select>
+            <div class="form-row" style="display: flex; justify-content: center;">
+                <div class="form-group col-md-6" >
+                    <label class="control-label">Giảng viên</label>
+                    <select asp-for="MaGiangVien" class ="form-control" asp-items="ViewBag.MaGiangVien"></select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="control-label">Sinh viên</label>
+                    <select asp-for="MaSinhVien" class ="form-control" asp-items="ViewBag.MaSinhVien"></select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="control-label">Học phần</label>
+                    <select asp-for="MaHocPhan" class ="form-control" asp-items="ViewBag.MaHocPhan"></select>
+                </div>
+                 <div class="form-group col-md-3">
+                    <label class="control-label">Điểm C mới</label>
+                    <input asp-for="DiemChuyenCanMoi" class="form-control" />
+                    <span asp-validation-for="DiemChuyenCanMoi" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label">Điểm B mới</label>
+                    <input asp-for="DiemKiemTraMoi" class="form-control" />
+                    <span asp-validation-for="DiemKiemTraMoi" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label class="control-label">Lý do</label>
+                    <input asp-for="LyDo" class="form-control" />
+                    <span asp-validation-for="LyDo" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="MaSinhVien" class="control-label"></label>
-                <select asp-for="MaSinhVien" class ="form-control" asp-items="ViewBag.MaSinhVien"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaHocPhan" class="control-label"></label>
-                <select asp-for="MaHocPhan" class ="form-control" asp-items="ViewBag.MaHocPhan"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiemChuyenCan" class="control-label"></label>
-                <select asp-for="DiemChuyenCan" class ="form-control" asp-items="ViewBag.DiemChuyenCan"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiemKiemTra" class="control-label"></label>
-                <select asp-for="DiemKiemTra" class ="form-control" asp-items="ViewBag.DiemKiemTra"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiemChuyenCanMoi" class="control-label"></label>
-                <input asp-for="DiemChuyenCanMoi" class="form-control" />
-                <span asp-validation-for="DiemChuyenCanMoi" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiemKiemTraMoi" class="control-label"></label>
-                <input asp-for="DiemKiemTraMoi" class="form-control" />
-                <span asp-validation-for="DiemKiemTraMoi" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LyDo" class="control-label"></label>
-                <input asp-for="LyDo" class="form-control" />
-                <span asp-validation-for="LyDo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TrangThai" class="control-label"></label>
-                <input asp-for="TrangThai" class="form-control" />
-                <span asp-validation-for="TrangThai" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Lưu" class="btn btn-outline-info" /> |
+                <a asp-action="Index">Trở về</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

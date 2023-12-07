@@ -13,13 +13,10 @@ namespace QuanLyDiem.Models
         public string MaHocPhan { get; set; }
         [ForeignKey("MaHocPhan")]
         public HocPhan? HocPhan {get; set;}
-        public int DiemThi { get; set; }
-        [ForeignKey("DiemThi")]
+        public double DiemThi { get; set; }
         public BangDiem? BangDiem {get; set;}
-        public string LyDo { get; set; }
-        public string TrangThai{get; set;}
-        public YeuCauPhucKhao(){
-            TrangThai = "Đang chờ xử lý";
-        }
+        public string LyDo { get; set; } ="";
+        public string TrangThai{get; set;} = "Đang chờ xử lý";
+
     }
 }

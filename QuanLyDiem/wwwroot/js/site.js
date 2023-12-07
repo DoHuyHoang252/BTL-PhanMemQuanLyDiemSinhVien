@@ -7,9 +7,63 @@ $(document).ready(function () {
     $('#myTable').DataTable({});
 });
 
-// function sortTable(columnIndex) {
-//     $('#myTable').DataTable().order([columnIndex, $('#myTable').DataTable().order()[0][1] === 'asc' ? 'desc' : 'asc']).draw();
-// }
+document.addEventListener('DOMContentLoaded', function () {
+  const toggleSidebarButton = document.getElementById('toggleSidebar');
+  const sidebar = document.getElementById('sidebar');
+
+  toggleSidebarButton.addEventListener('click', function () {
+      sidebar.classList.toggle('show');
+  });
+
+  // Lấy tất cả các nút "Chi tiết" và thêm sự kiện click cho mỗi nút
+  const detailButtons = document.querySelectorAll('.btn-details');
+  detailButtons.forEach(function (button) {
+      button.addEventListener('click', function (event) {
+          // Ngăn chặn sự kiện click từ lan truyền đến các phần khác của trang
+          event.stopPropagation();
+
+          // Gọi hàm openModal với ID tương ứng
+          openModal(button.getAttribute('data-id'));
+          openYeuCauModal(button.getAttribute('data-id'));
+      });
+  });
+
+  function openModal(id) {
+      // Sử dụng AJAX để gửi yêu cầu lấy thông tin chi tiết từ server
+      $.ajax({
+          url: '/BangDiem/Details/' + id, // Điều chỉnh đường dẫn theo đúng định dạng URL của ứng dụng ASP.NET Core
+          type: 'GET',
+          success: function (data) {
+              // Nạp dữ liệu vào modal
+              $('#modalContent').html(data);
+              // Mở modal
+              $('#myModal').modal('show');
+          },
+          // error: function () {
+          //     alert('Đã xảy ra lỗi khi tải dữ liệu chi tiết.');
+          // }
+      });
+      $('#myModal .close, #myModal [data-dismiss="modal"]').on('click', function () {
+        $('#myModal').modal('hide');
+    });
+  }
+    function openYeuCauModal(id) {
+      $.ajax({
+          url: '/YeuCauSuaDiem/Details/' + id,
+          type: 'GET',
+          success: function (data) {
+              $('#yeuCauModalContent').html(data);
+              $('#yeuCauModal').modal('show');
+          },
+          // error: function () {
+          //     alert('Đã xảy ra lỗi khi tải dữ liệu yêu cầu sửa điểm.');
+          // }
+      });
+      $('#yeuCauModal .close, #yeuCauModal [data-dismiss="modal"]').on('click', function () {
+        $('#yeuCauModal').modal('hide');
+    });
+  }
+});
 function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("myTable");

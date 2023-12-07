@@ -4,43 +4,57 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h3>Danh sách khóa học</h3>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TenKhoaHoc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NamBatDau)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NamKetThuc)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenKhoaHoc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NamBatDau)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NamKetThuc)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaKhoaHoc">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaKhoaHoc">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-12">
+        <div class="card w3-round-large">
+            <div class="card-body">
+                <div class="w3-center"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Tạo mới khóa học</a></div>
+                <div class="table-responsive m-t-40 ">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)" class="column_name" style="width: 25%">
+                                    Mã khóa học
+                                </th>
+                                <th onclick="sortTable(1)" class="column_name" style="width: 30%">
+                                    Tên khóa học
+                                </th>
+                                <th onclick="sortTable(2)" class="column_name" style="width: 15%">
+                                    Bắt đầu
+                                </th>
+                                <th onclick="sortTable(3)" class="column_name" style="width: 15%">
+                                    Kết thúc
+                                </th>
+                                <th style="width:15%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    @foreach (var item in Model) {
+                            <tr>
+                                <td >
+                                    @Html.DisplayFor(modelItem => item.MaKhoaHoc)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenKhoaHoc)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NamBatDau)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NamKetThuc)
+                                </td>
+                                <td >
+                                    <a class="btn btn-outline-info w3-round-large w3-medium" asp-action="Edit" asp-route-id="@item.MaKhoaHoc">Sửa</a>
+                                    <a class="btn btn-outline-info w3-round-large w3-medium" asp-action="Delete"  asp-route-id="@item.MaKhoaHoc">Xóa</a>
+                                </td>
+                            </tr>
+                    }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -22,7 +22,7 @@ namespace QuanLyDiem.Controllers
         // GET: YeuCauSuaDiem
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.YeuCauSuaDiem.Include(y => y.BangDiem).Include(y => y.GianhVien).Include(y => y.HocPhan).Include(y => y.SinhVien);
+            var applicationDbContext = _context.YeuCauSuaDiem.Include(y => y.BangDiem).Include(y => y.GiangVien).Include(y => y.HocPhan).Include(y => y.SinhVien);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,7 +36,7 @@ namespace QuanLyDiem.Controllers
 
             var yeuCauSuaDiem = await _context.YeuCauSuaDiem
                 .Include(y => y.BangDiem)
-                .Include(y => y.GianhVien)
+                .Include(y => y.GiangVien)
                 .Include(y => y.HocPhan)
                 .Include(y => y.SinhVien)
                 .FirstOrDefaultAsync(m => m.MaYeuCauSuaDiem == id);
@@ -149,7 +149,7 @@ namespace QuanLyDiem.Controllers
 
             var yeuCauSuaDiem = await _context.YeuCauSuaDiem
                 .Include(y => y.BangDiem)
-                .Include(y => y.GianhVien)
+                .Include(y => y.GiangVien)
                 .Include(y => y.HocPhan)
                 .Include(y => y.SinhVien)
                 .FirstOrDefaultAsync(m => m.MaYeuCauSuaDiem == id);

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj": {}
+    "D:\\BTL-PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj": {}
   },
   "projects": {
-    "D:\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj": {
+    "D:\\BTL-PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj",
+        "projectUniqueName": "D:\\BTL-PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj",
         "projectName": "QuanLyDiem",
-        "projectPath": "D:\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\obj\\",
+        "projectPath": "D:\\BTL-PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj",
+        "packagesPath": "C:\\Users\\lhcii\\.nuget\\packages\\",
+        "outputPath": "D:\\BTL-PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\lhcii\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
