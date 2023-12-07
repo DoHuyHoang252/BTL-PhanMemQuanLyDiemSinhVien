@@ -3,8 +3,83 @@
 
 // Write your JavaScript code.
 
+
+
 $(document).ready(function () {
-    $('#myTable').DataTable({});
+  $('#myTable').DataTable({
+      "pagingType": "simple_numbers",
+      "lengthMenu": [[5, 10, 20, -1], [5, 10, 20, "Tất cả"]],
+      "language": {
+        "search": "Tìm kiếm:",
+        "infoFiltered": "(đã lọc từ _MAX_ bản ghi)",
+        "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+        "infoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
+        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
+        "sLengthMenu": "Hiển thị _MENU_ bản ghi",
+        "paginate": {
+            "previous": "Trước",
+            "next": "Sau"
+        },
+    }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  const toggleSidebarButton = document.getElementById('toggleSidebar');
+  const sidebar = document.getElementById('sidebar');
+
+  toggleSidebarButton.addEventListener('click', function () {
+      sidebar.classList.toggle('show');
+  });
+
+  // Lấy tất cả các nút "Chi tiết" và thêm sự kiện click cho mỗi nút
+  const detailButtons = document.querySelectorAll('.btn-details');
+  detailButtons.forEach(function (button) {
+      button.addEventListener('click', function (event) {
+          // Ngăn chặn sự kiện click từ lan truyền đến các phần khác của trang
+          event.stopPropagation();
+
+          // Gọi hàm openModal với ID tương ứng
+          openModal(button.getAttribute('data-id'));
+          openYeuCauModal(button.getAttribute('data-id'));
+      });
+  });
+
+  function openModal(id) {
+      // Sử dụng AJAX để gửi yêu cầu lấy thông tin chi tiết từ server
+      $.ajax({
+          url: '/BangDiem/Details/' + id, // Điều chỉnh đường dẫn theo đúng định dạng URL của ứng dụng ASP.NET Core
+          type: 'GET',
+          success: function (data) {
+              // Nạp dữ liệu vào modal
+              $('#modalContent').html(data);
+              // Mở modal
+              $('#myModal').modal('show');
+          },
+          // error: function () {
+          //     alert('Đã xảy ra lỗi khi tải dữ liệu chi tiết.');
+          // }
+      });
+      $('#myModal .close, #myModal [data-dismiss="modal"]').on('click', function () {
+        $('#myModal').modal('hide');
+    });
+  }
+    function openYeuCauModal(id) {
+      $.ajax({
+          url: '/YeuCauSuaDiem/Details/' + id,
+          type: 'GET',
+          success: function (data) {
+              $('#yeuCauModalContent').html(data);
+              $('#yeuCauModal').modal('show');
+          },
+          // error: function () {
+          //     alert('Đã xảy ra lỗi khi tải dữ liệu yêu cầu sửa điểm.');
+          // }
+      });
+      $('#yeuCauModal .close, #yeuCauModal [data-dismiss="modal"]').on('click', function () {
+        $('#yeuCauModal').modal('hide');
+    });
+  }
 });
 
 // function sortTable(columnIndex) {

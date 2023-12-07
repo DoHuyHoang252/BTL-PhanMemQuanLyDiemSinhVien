@@ -4,45 +4,47 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h3>Sửa thông tin lớp học phần</h3>
 
-<h4>LopHocPhan</h4>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class=" w3-card w3-white container w3-round-large" style="width:50%">
         <form asp-action="Edit">
+            <h4 class="w3-center">Thông tin lớp học phần</h4>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MaLopHocPhan" />
-            <div class="form-group">
-                <label asp-for="TenLopHocPhan" class="control-label"></label>
-                <input asp-for="TenLopHocPhan" class="form-control" />
-                <span asp-validation-for="TenLopHocPhan" class="text-danger"></span>
+            <div class="form-row" style="display: flex; justify-content: center;">
+                <div class="form-group col-md-8" >
+                    <label class="control-label">Tên lớp học phần</label>
+                    <input asp-for="TenLopHocPhan" class="form-control" />
+                    <span asp-validation-for="TenLopHocPhan" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4" >
+                    <label class="control-label">Học kỳ</label>
+                    <select asp-for="MaHocKy" class="form-control" asp-items="ViewBag.MaHocKy"></select>
+                    <span asp-validation-for="MaHocKy" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row" style="display: flex; justify-content: center;">
+                <div class="form-group col-md-6" >
+                    <label class="control-label">Học phần</label>
+                    <select asp-for="MaHocPhan" class="form-control" asp-items="ViewBag.MaHocPhan"></select>
+                    <span asp-validation-for="MaHocPhan" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6" >
+                    <label class="control-label">Giảng viên</label>
+                    <select asp-for="MaGiangVien" class="form-control" asp-items="ViewBag.MaGiangVien"></select>
+                    <span asp-validation-for="MaGiangVien" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="MaHocPhan" class="control-label"></label>
-                <select asp-for="MaHocPhan" class="form-control" asp-items="ViewBag.MaHocPhan"></select>
-                <span asp-validation-for="MaHocPhan" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaGiangVien" class="control-label"></label>
-                <select asp-for="MaGiangVien" class="form-control" asp-items="ViewBag.MaGiangVien"></select>
-                <span asp-validation-for="MaGiangVien" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaHocKy" class="control-label"></label>
-                <select asp-for="MaHocKy" class="form-control" asp-items="ViewBag.MaHocKy"></select>
-                <span asp-validation-for="MaHocKy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Lưu" class="btn btn-outline-info w3-medium" /> |
+                <a asp-action="Index">Trở về</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</div>  
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -4,50 +4,79 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Xóa bảng điểm sinh viên</h1>
+<h3>Xóa bảng điểm sinh viên</h3>
 
 <div>
     <hr />
-    <dl class="w3-card w3-white container" style="width:60%">
-        
+    <dl class="w3-card w3-white container w3-round-large" style="width:60%">
         <div class="row">
-            <dt class = "col-sm-6">
-                Sinh viên
+            <dt class = "col-sm-3">
+                Tên sinh viên
             </dt>
-            <dd class = "col-sm-6">
+            <dd class = "col-sm-3">
                 @Html.DisplayFor(model => model.SinhVien.TenSinhVien)
             </dd>
-        </div>
-        <div class="row">
-            <dt class = "col-sm-6">
+            <dt class = "col-sm-3">
                 Học phần
             </dt>
-            <dd class = "col-sm-6">
+            <dd class = "col-sm-3">
                 @Html.DisplayFor(model => model.HocPhan.TenHocPhan)
             </dd>
         </div>
         <div class="row">
-            <dt class = "col-sm-6">
-                Điểm chuyên cần
+            <dt class = "col-sm-3">
+                Số tín chỉ
             </dt>
-            <dd class = "col-sm-6">
-                @Html.DisplayFor(model => model.DiemChuyenCan)
+            <dd class = "col-sm-3">
+                @Html.DisplayFor(model => model.SoTinChi)
+            </dd>
+            <dt class = "col-sm-3">
+                Lớp học phần
+            </dt>
+            <dd class = "col-sm-3">
+                @Html.DisplayFor(model => model.LopHocPhan.TenLopHocPhan)
             </dd>
         </div>
         <div class="row">
-            <dt class = "col-sm-6">
+            <dt class = "col-sm-3">
+                Điểm chuyên cần
+            </dt>
+            <dd class = "col-sm-3">
+                @Html.DisplayFor(model => model.DiemChuyenCan)
+            </dd>
+            <dt class = "col-sm-3">
                 Điểm kiểm tra
             </dt>
-            <dd class = "col-sm-6">
+            <dd class = "col-sm-3">
                 @Html.DisplayFor(model => model.DiemKiemTra)
             </dd>
         </div>
         <div class="row">
-            <dt class = "col-sm-6">
+            <dt class = "col-sm-3">
                 Điểm thi
             </dt>
-            <dd class = "col-sm-6">
+            <dd class = "col-sm-3">
                 @Html.DisplayFor(model => model.DiemThi)
+            </dd>
+            <dt class = "col-sm-3">
+                Điểm TK(10)
+            </dt>
+            <dd class = "col-sm-3">
+                @Html.DisplayFor(model => model.DiemTong)
+            </dd>
+        </div>
+        <div class="row">
+            <dt class = "col-sm-3">
+                Điểm TK(4)
+            </dt>
+            <dd class = "col-sm-3">
+                @Html.DisplayFor(model => model.DiemTongHe4)
+            </dd>
+            <dt class = "col-sm-3">
+                Điểm TK(C)
+            </dt>
+            <dd class = "col-sm-3">
+                @Html.DisplayFor(model => model.DiemChu)
             </dd>
         </div>
     </dl>

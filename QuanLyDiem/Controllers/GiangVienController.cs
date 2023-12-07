@@ -5,15 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
+using QuanLyDiem.Models.Process;
 
 namespace QuanLyDiem.Controllers
 {
     public class GiangVienController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        private ExcelProcess _excelProcess = new ExcelProcess();
         public GiangVienController(ApplicationDbContext context)
         {
             _context = context;
@@ -49,8 +51,8 @@ namespace QuanLyDiem.Controllers
         // GET: GiangVien/Create
         public IActionResult Create()
         {
-            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "MaChuyenNganh");
-            ViewData["MaKhoa"] = new SelectList(_context.Khoa, "MaKhoa", "MaKhoa");
+            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "TenChuyenNganh");
+            ViewData["MaKhoa"] = new SelectList(_context.Khoa, "MaKhoa", "TenKhoa");
             return View();
         }
 
@@ -67,8 +69,8 @@ namespace QuanLyDiem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "MaChuyenNganh", giangVien.MaChuyenNganh);
-            ViewData["MaKhoa"] = new SelectList(_context.Khoa, "MaKhoa", "MaKhoa", giangVien.MaKhoa);
+            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "TenChuyenNganh", giangVien.MaChuyenNganh);
+            ViewData["MaKhoa"] = new SelectList(_context.Khoa, "MaKhoa", "TenKhoa", giangVien.MaKhoa);
             return View(giangVien);
         }
 
@@ -85,8 +87,8 @@ namespace QuanLyDiem.Controllers
             {
                 return NotFound();
             }
-            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "MaChuyenNganh", giangVien.MaChuyenNganh);
-            ViewData["MaKhoa"] = new SelectList(_context.Khoa, "MaKhoa", "MaKhoa", giangVien.MaKhoa);
+            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "TenChuyenNganh", giangVien.MaChuyenNganh);
+            ViewData["MaKhoa"] = new SelectList(_context.Khoa, "MaKhoa", "TenKhoa", giangVien.MaKhoa);
             return View(giangVien);
         }
 
@@ -122,8 +124,8 @@ namespace QuanLyDiem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "MaChuyenNganh", giangVien.MaChuyenNganh);
-            ViewData["MaKhoa"] = new SelectList(_context.Khoa, "MaKhoa", "MaKhoa", giangVien.MaKhoa);
+            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "TenChuyenNganh", giangVien.MaChuyenNganh);
+            ViewData["MaKhoa"] = new SelectList(_context.Khoa, "MaKhoa", "TenKhoa", giangVien.MaKhoa);
             return View(giangVien);
         }
 
@@ -169,6 +171,78 @@ namespace QuanLyDiem.Controllers
         private bool GiangVienExists(string id)
         {
           return (_context.GiangVien?.Any(e => e.MaGiangVien == id)).GetValueOrDefault();
+        }
+        public async Task<IActionResult> Upload(){
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upload(IFormFile file){
+
+            if(file != null){
+                string fileExtension = Path.GetExtension(file.FileName);
+                if(fileExtension != ".xls" && fileExtension != ".xlsx"){
+                    ModelState.AddModelError("","Please choose excel file to upload!");
+                }
+                else
+                {
+                    var fileName = DateTime.Now.ToShortTimeString() + fileExtension;
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory() + "/Uploads/Excels", fileName);
+                    var fileLocation = new FileInfo(filePath).ToString();
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                        var dt = _excelProcess.ExcelToDataTable(fileLocation);
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            var giangVien = new GiangVien()
+                            {
+                                MaGiangVien = dt.Rows[i][0].ToString(),
+                                TenGiangVien = dt.Rows[i][1].ToString(),
+                                GioiTinh = dt.Rows[i][2].ToString(),
+                                NgaySinh = Convert.ToDateTime(dt.Rows[i][3]),
+                                MaKhoa = dt.Rows[i][4].ToString(),
+                                MaChuyenNganh = dt.Rows[i][5].ToString(),
+                            };
+
+                            _context.Add(giangVien);
+                        }
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+            }
+            return View();
+        }
+        public IActionResult Download()
+        {
+            var fileName = "YourFileName" + ".xlsx";
+            using(ExcelPackage excelPackage = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+                worksheet.Cells["A1"].Value = "MaGiangVien";
+                worksheet.Cells["B1"].Value = "TenGiangVien";
+                worksheet.Cells["C1"].Value = "GioiTinh";
+                worksheet.Cells["D1"].Value = "NgaySinh";
+                worksheet.Cells["E1"].Value = "Khoa";
+                worksheet.Cells["F1"].Value = "ChuyenNganh";
+
+                // Get only the properties you want to include
+                var giangVienList = _context.GiangVien
+                    .Select(b => new
+                    {
+                        b.MaGiangVien,
+                        b.TenGiangVien,
+                        b.GioiTinh,
+                        NgaySinh = b.NgaySinh.ToString("dd/MM/yyyy"),
+                        b.Khoa.MaKhoa,
+                        b.ChuyenNganh.TenChuyenNganh,
+                    })
+                .ToList();
+                worksheet.Cells["A2"].LoadFromCollection(giangVienList);
+                var stream = new MemoryStream(excelPackage.GetAsByteArray());
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
         }
     }
 }

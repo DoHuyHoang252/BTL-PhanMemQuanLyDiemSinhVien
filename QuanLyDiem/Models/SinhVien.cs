@@ -9,6 +9,7 @@ namespace QuanLyDiem.Models
         public string TenSinhVien { get; set; }
         public string GioiTinh { get; set; }
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime NgaySinh { get; set; }
         public string TinhTrang { get; set; }
         public string MaChuyenNganh { get; set; }
@@ -17,5 +18,10 @@ namespace QuanLyDiem.Models
         public string MaKhoaHoc { get; set; }
         [ForeignKey("MaKhoaHoc")]
         public KhoaHoc? KhoaHoc {get; set;}
+        public double DTBTLHe10 {get; set;}
+        public double DTBTLHe4 {get; set;}
+        public int SoTinChiTichLuy {get; set;}
+        public List<BangDiem>? BangDiem { get; set; }
+        public List<HocPhan>? HocPhan { get; set; }
     }
 }

@@ -50,9 +50,9 @@ namespace QuanLyDiem.Controllers
         // GET: YeuCauPhucKhao/Create
         public IActionResult Create()
         {
-            ViewData["DiemThi"] = new SelectList(_context.BangDiem, "MaBangDiem", "MaBangDiem");
-            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "MaHocPhan");
-            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "MaSinhVien");
+            ViewData["DiemThi"] = new SelectList(_context.BangDiem, "MaBangDiem", "DiemThi");
+            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "TenHocPhan");
+            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "TenSinhVien");
             return View();
         }
 
@@ -61,17 +61,27 @@ namespace QuanLyDiem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaYeuCauPhucKhao,MaSinhVien,MaHocPhan,DiemThi,LyDo,TrangThai")] YeuCauPhucKhao yeuCauPhucKhao)
+        public async Task<IActionResult> Create([Bind("MaYeuCauPhucKhao,MaSinhVien,MaHocPhan,LyDo")] YeuCauPhucKhao yeuCauPhucKhao)
         {
             if (ModelState.IsValid)
             {
+                var selectedDiemThi = await _context.BangDiem
+                .Where(e => e.MaHocPhan == yeuCauPhucKhao.MaHocPhan && e.MaSinhVien == yeuCauPhucKhao.MaSinhVien) // Specify your condition here
+                .FirstOrDefaultAsync();
+                if (selectedDiemThi != null)
+                {
+                    if(yeuCauPhucKhao.MaSinhVien == selectedDiemThi.MaSinhVien && yeuCauPhucKhao.MaHocPhan == selectedDiemThi.MaHocPhan)
+                    {
+                        yeuCauPhucKhao.DiemThi = selectedDiemThi.DiemThi;
+                    }
+                }
                 _context.Add(yeuCauPhucKhao);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DiemThi"] = new SelectList(_context.BangDiem, "MaBangDiem", "MaBangDiem", yeuCauPhucKhao.DiemThi);
-            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "MaHocPhan", yeuCauPhucKhao.MaHocPhan);
-            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "MaSinhVien", yeuCauPhucKhao.MaSinhVien);
+            ViewData["DiemThi"] = new SelectList(_context.BangDiem, "MaBangDiem", "DiemThi", yeuCauPhucKhao.DiemThi);
+            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "TenHocPhan", yeuCauPhucKhao.MaHocPhan);
+            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "TenSinhVien", yeuCauPhucKhao.MaSinhVien);
             return View(yeuCauPhucKhao);
         }
 
@@ -88,9 +98,9 @@ namespace QuanLyDiem.Controllers
             {
                 return NotFound();
             }
-            ViewData["DiemThi"] = new SelectList(_context.BangDiem, "MaBangDiem", "MaBangDiem", yeuCauPhucKhao.DiemThi);
-            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "MaHocPhan", yeuCauPhucKhao.MaHocPhan);
-            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "MaSinhVien", yeuCauPhucKhao.MaSinhVien);
+            ViewData["DiemThi"] = new SelectList(_context.BangDiem, "MaBangDiem", "DiemThi", yeuCauPhucKhao.DiemThi);
+            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "TenHocPhan", yeuCauPhucKhao.MaHocPhan);
+            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "TenSinhVien", yeuCauPhucKhao.MaSinhVien);
             return View(yeuCauPhucKhao);
         }
 
@@ -126,9 +136,9 @@ namespace QuanLyDiem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DiemThi"] = new SelectList(_context.BangDiem, "MaBangDiem", "MaBangDiem", yeuCauPhucKhao.DiemThi);
-            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "MaHocPhan", yeuCauPhucKhao.MaHocPhan);
-            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "MaSinhVien", yeuCauPhucKhao.MaSinhVien);
+            ViewData["DiemThi"] = new SelectList(_context.BangDiem, "MaBangDiem", "DiemThi", yeuCauPhucKhao.DiemThi);
+            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "TenHocPhan", yeuCauPhucKhao.MaHocPhan);
+            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "TenSinhVien", yeuCauPhucKhao.MaSinhVien);
             return View(yeuCauPhucKhao);
         }
 

@@ -4,63 +4,109 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Bảng điểm sinh viên</h1>
+<h3>Bảng điểm sinh viên</h3>
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div class="w3-center"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Tạo mới bảng điểm</a></div>
-
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="w3-right"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Tạo mới bảng điểm</a></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="w3-left"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Download">Tải về danh sách</a></div>
+                    </div>
+                </div>
                 <div class="table-responsive m-t-40 ">
                     <table id="myTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th onclick="sortTable(0)">
-                                    Sinh viên
+                                <th onclick="sortTable(0)" class="column_name" style="width:10%">
+                                    Mã học phần
                                 </th>
-                                <th onclick="sortTable(1)">
-                                    Học phần
+                                <th onclick="sortTable(1)" class="column_name" style="width:20%">
+                                    Tên học phần
                                 </th>
-                                <th onclick="sortTable(2)">
-                                    Điểm chuyên cần
+                                <th onclick="sortTable(2)" class="column_name" style="width:10%">
+                                    Mã sinh viên
                                 </th>
-                                <th onclick="sortTable(3)">
-                                    Điểm kiểm tra
+                                <th onclick="sortTable(3)" class="column_name" style="width:15%">
+                                    Tên sinh viên
                                 </th>
-                                <th onclick="sortTable(4)">
-                                    Điểm thi
+                                <th onclick="sortTable(4)" class="column_name" style="width:10%">
+                                    Lớp học phần
                                 </th>
-                                <th></th>
+                                <th onclick="sortTable(5)" class="column_name" style="width:5%">
+                                    Điểm TK(10)
+                                </th>
+                                <th onclick="sortTable(6)" class="column_name" style="width:5%">
+                                    Điểm TK(4)
+                                </th>
+                                <th onclick="sortTable(7)" class="column_name" style="width:5%">
+                                    Điểm TK(C)
+                                </th>
+                                <th style="width:20%"></th>
                             </tr>
                         </thead>
                         <tbody>
                     @foreach (var item in Model) {
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.SinhVien.TenSinhVien)
+                                <td >
+                                    @Html.DisplayFor(modelItem => item.MaHocPhan)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.HocPhan.TenHocPhan)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DiemChuyenCan)
+                                <td >
+                                    @Html.DisplayFor(modelItem => item.MaSinhVien)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.DiemKiemTra)
+                                    @Html.DisplayFor(modelItem => item.SinhVien.TenSinhVien)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.DiemThi)
+                                    @Html.DisplayFor(modelItem => item.LopHocPhan.TenLopHocPhan)
                                 </td>
                                 <td>
-                                    <a class="btn btn-outline-info w3-round-large" asp-action="Edit" asp-route-id="@item.MaBangDiem">Sửa</a>
-                                    <a class="btn btn-outline-info w3-round-large" asp-action="Delete" asp-route-id="@item.MaBangDiem">Xóa</a>
+                                    @Html.DisplayFor(modelItem => item.DiemTong)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiemTongHe4)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiemChu)
+                                </td>
+                                <td >
+                                    <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Edit" asp-route-id="@item.MaBangDiem">Sửa</a>
+                                    <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Delete"  asp-route-id="@item.MaBangDiem">Xóa</a>
+                                    <button class="btn btn-outline-info w3-medium w3-round-large btn-details" data-id="@item.MaBangDiem"><i class="bi bi-list-ul"></i></button>
+
                                 </td>
                             </tr>
                     }
                         </tbody>
                     </table>
+                    <!-- Thêm modal Bootstrap -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Đây là nơi để hiển thị thông tin chi tiết -->
+                                    <div id="modalContent"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-info w3-medium w3-round-large" data-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+

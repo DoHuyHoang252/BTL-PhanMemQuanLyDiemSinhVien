@@ -5,14 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
+using QuanLyDiem.Models.Process;
 
 namespace QuanLyDiem.Controllers
 {
     public class LopHocPhanController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private ExcelProcess _excelProcess = new ExcelProcess();
 
         public LopHocPhanController(ApplicationDbContext context)
         {
@@ -22,12 +25,12 @@ namespace QuanLyDiem.Controllers
         // GET: LopHocPhan
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.LopHocPhan.Include(l => l.GiangVien).Include(l => l.HocKy).Include(l => l.HocPhan);
+            var applicationDbContext = _context.LopHocPhan.Include(l => l.BangDiem).Include(l => l.GiangVien).Include(l => l.HocKy).Include(l => l.HocPhan);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: LopHocPhan/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.LopHocPhan == null)
             {
@@ -35,6 +38,7 @@ namespace QuanLyDiem.Controllers
             }
 
             var lopHocPhan = await _context.LopHocPhan
+                .Include(b => b.BangDiem)
                 .Include(l => l.GiangVien)
                 .Include(l => l.HocKy)
                 .Include(l => l.HocPhan)
@@ -50,9 +54,9 @@ namespace QuanLyDiem.Controllers
         // GET: LopHocPhan/Create
         public IActionResult Create()
         {
-            ViewData["MaGiangVien"] = new SelectList(_context.GiangVien, "MaGiangVien", "MaGiangVien");
-            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "MaHocKy");
-            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "MaHocPhan");
+            ViewData["MaGiangVien"] = new SelectList(_context.GiangVien, "MaGiangVien", "TenGiangVien");
+            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "TenHocKy");
+            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "TenHocPhan");
             return View();
         }
 
@@ -69,9 +73,9 @@ namespace QuanLyDiem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaGiangVien"] = new SelectList(_context.GiangVien, "MaGiangVien", "MaGiangVien", lopHocPhan.MaGiangVien);
-            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "MaHocKy", lopHocPhan.MaHocKy);
-            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "MaHocPhan", lopHocPhan.MaHocPhan);
+            ViewData["MaGiangVien"] = new SelectList(_context.GiangVien, "MaGiangVien", "TenGiangVien", lopHocPhan.MaGiangVien);
+            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "TenHocKy", lopHocPhan.MaHocKy);
+            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "TenHocPhan", lopHocPhan.MaHocPhan);
             return View(lopHocPhan);
         }
 
@@ -88,9 +92,9 @@ namespace QuanLyDiem.Controllers
             {
                 return NotFound();
             }
-            ViewData["MaGiangVien"] = new SelectList(_context.GiangVien, "MaGiangVien", "MaGiangVien", lopHocPhan.MaGiangVien);
-            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "MaHocKy", lopHocPhan.MaHocKy);
-            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "MaHocPhan", lopHocPhan.MaHocPhan);
+            ViewData["MaGiangVien"] = new SelectList(_context.GiangVien, "MaGiangVien", "TenGiangVien", lopHocPhan.MaGiangVien);
+            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "TenHocKy", lopHocPhan.MaHocKy);
+            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "TenHocPhan", lopHocPhan.MaHocPhan);
             return View(lopHocPhan);
         }
 
@@ -126,9 +130,9 @@ namespace QuanLyDiem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaGiangVien"] = new SelectList(_context.GiangVien, "MaGiangVien", "MaGiangVien", lopHocPhan.MaGiangVien);
-            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "MaHocKy", lopHocPhan.MaHocKy);
-            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "MaHocPhan", lopHocPhan.MaHocPhan);
+            ViewData["MaGiangVien"] = new SelectList(_context.GiangVien, "MaGiangVien", "TenGiangVien", lopHocPhan.MaGiangVien);
+            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "TenHocKy", lopHocPhan.MaHocKy);
+            ViewData["MaHocPhan"] = new SelectList(_context.HocPhan, "MaHocPhan", "TenHocPhan", lopHocPhan.MaHocPhan);
             return View(lopHocPhan);
         }
 
@@ -175,6 +179,75 @@ namespace QuanLyDiem.Controllers
         private bool LopHocPhanExists(string id)
         {
           return (_context.LopHocPhan?.Any(e => e.MaLopHocPhan == id)).GetValueOrDefault();
+        }
+        public async Task<IActionResult> Upload(){
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upload(IFormFile file){
+
+            if(file != null){
+                string fileExtension = Path.GetExtension(file.FileName);
+                if(fileExtension != ".xls" && fileExtension != ".xlsx"){
+                    ModelState.AddModelError("","Please choose excel file to upload!");
+                }
+                else
+                {
+                    var fileName = DateTime.Now.ToShortTimeString() + fileExtension;
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory() + "/Uploads/Excels", fileName);
+                    var fileLocation = new FileInfo(filePath).ToString();
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                        var dt = _excelProcess.ExcelToDataTable(fileLocation);
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            var lopHocPhan = new LopHocPhan()
+                            {
+                                MaLopHocPhan = dt.Rows[i][0].ToString(),
+                                TenLopHocPhan = dt.Rows[i][1].ToString(),
+                                MaHocPhan = dt.Rows[i][1].ToString(),
+                                MaGiangVien = dt.Rows[i][5].ToString(),
+                                MaHocKy = dt.Rows[i][5].ToString(),
+                            };
+
+                            _context.Add(lopHocPhan);
+                        }
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+            }
+            return View();
+        }
+        public IActionResult Download()
+        {
+            var fileName = "YourFileName" + ".xlsx";
+            using(ExcelPackage excelPackage = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+                worksheet.Cells["A1"].Value = "MaLopHocPhan";
+                worksheet.Cells["B1"].Value = "TenLopHocPhan";
+                worksheet.Cells["C1"].Value = "HocPhan";
+                worksheet.Cells["D1"].Value = "GiangVien";
+                worksheet.Cells["D1"].Value = "HocKy";
+
+                // Get only the properties you want to include
+                var lopHocPhanList = _context.LopHocPhan
+                    .Select(b => new
+                    {
+                        b.MaLopHocPhan,
+                        b.TenLopHocPhan,
+                        b.HocPhan.TenHocPhan,
+                        b.GiangVien.TenGiangVien,
+                        b.HocKy.TenHocKy,
+                    })
+                .ToList();
+                worksheet.Cells["A2"].LoadFromCollection(lopHocPhanList);
+                var stream = new MemoryStream(excelPackage.GetAsByteArray());
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
         }
     }
 }

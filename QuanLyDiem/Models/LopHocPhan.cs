@@ -16,5 +16,6 @@ namespace QuanLyDiem.Models
         public string MaHocKy { get; set; }
         [ForeignKey("MaHocKy")]
         public HocKy? HocKy {get; set;}
+        public List<BangDiem>? BangDiem { get; set; }
     }
 }

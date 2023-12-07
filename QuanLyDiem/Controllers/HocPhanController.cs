@@ -5,14 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
+using QuanLyDiem.Models.Process;
 
 namespace QuanLyDiem.Controllers
 {
     public class HocPhanController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private ExcelProcess _excelProcess = new ExcelProcess();
 
         public HocPhanController(ApplicationDbContext context)
         {
@@ -144,6 +147,72 @@ namespace QuanLyDiem.Controllers
         private bool HocPhanExists(string id)
         {
           return (_context.HocPhan?.Any(e => e.MaHocPhan == id)).GetValueOrDefault();
+        }
+        public async Task<IActionResult> Upload(){
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upload(IFormFile file){
+
+            if(file != null){
+                string fileExtension = Path.GetExtension(file.FileName);
+                if(fileExtension != ".xls" && fileExtension != ".xlsx"){
+                    ModelState.AddModelError("","Please choose excel file to upload!");
+                }
+                else
+                {
+                    var fileName = DateTime.Now.ToShortTimeString() + fileExtension;
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory() + "/Uploads/Excels", fileName);
+                    var fileLocation = new FileInfo(filePath).ToString();
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                        var dt = _excelProcess.ExcelToDataTable(fileLocation);
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            var hocPhan = new HocPhan()
+                            {
+                                MaHocPhan = dt.Rows[i][0].ToString(),
+                                TenHocPhan = dt.Rows[i][1].ToString(),
+                                SoTinChi = Convert.ToInt32(dt.Rows[i][4]),
+                                MaChuyenNganh = dt.Rows[i][5].ToString(),
+                            };
+
+                            _context.Add(hocPhan);
+                        }
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+            }
+            return View();
+        }
+        public IActionResult Download()
+        {
+            var fileName = "YourFileName" + ".xlsx";
+            using(ExcelPackage excelPackage = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+                worksheet.Cells["A1"].Value = "MaHocPhan";
+                worksheet.Cells["B1"].Value = "TenHocPhan";
+                worksheet.Cells["C1"].Value = "SoTinChi";
+                worksheet.Cells["D1"].Value = "ChuyenNganh";
+
+                // Get only the properties you want to include
+                var hocPhanList = _context.HocPhan
+                    .Select(b => new
+                    {
+                        b.MaHocPhan,
+                        b.TenHocPhan,
+                        b.SoTinChi,
+                        b.ChuyenNganh.TenChuyenNganh,
+                    })
+                .ToList();
+                worksheet.Cells["A2"].LoadFromCollection(hocPhanList);
+                var stream = new MemoryStream(excelPackage.GetAsByteArray());
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
         }
     }
 }

@@ -36,13 +36,30 @@ namespace QuanLyDiem.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("MaLopHocPhan")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("MaSinhVien")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SoTinChi")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TenHocPhan")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TenSinhVien")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("MaBangDiem");
 
                     b.HasIndex("MaHocPhan");
+
+                    b.HasIndex("MaLopHocPhan");
 
                     b.HasIndex("MaSinhVien");
 
@@ -131,6 +148,9 @@ namespace QuanLyDiem.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("SinhVienMaSinhVien")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("SoTinChi")
                         .HasColumnType("INTEGER");
 
@@ -141,6 +161,8 @@ namespace QuanLyDiem.Migrations
                     b.HasKey("MaHocPhan");
 
                     b.HasIndex("MaChuyenNganh");
+
+                    b.HasIndex("SinhVienMaSinhVien");
 
                     b.ToTable("HocPhan");
                 });
@@ -216,6 +238,12 @@ namespace QuanLyDiem.Migrations
                     b.Property<string>("MaSinhVien")
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("DTBTLHe10")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("DTBTLHe4")
+                        .HasColumnType("REAL");
+
                     b.Property<string>("GioiTinh")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -230,6 +258,9 @@ namespace QuanLyDiem.Migrations
 
                     b.Property<DateTime>("NgaySinh")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("SoTinChiTichLuy")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("TenSinhVien")
                         .IsRequired()
@@ -285,8 +316,11 @@ namespace QuanLyDiem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DiemThi")
+                    b.Property<int?>("BangDiemMaBangDiem")
                         .HasColumnType("INTEGER");
+
+                    b.Property<double>("DiemThi")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("LyDo")
                         .IsRequired()
@@ -306,7 +340,7 @@ namespace QuanLyDiem.Migrations
 
                     b.HasKey("MaYeuCauPhucKhao");
 
-                    b.HasIndex("DiemThi");
+                    b.HasIndex("BangDiemMaBangDiem");
 
                     b.HasIndex("MaHocPhan");
 
@@ -321,17 +355,20 @@ namespace QuanLyDiem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DiemChuyenCan")
+                    b.Property<int?>("BangDiemMaBangDiem")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DiemChuyenCanMoi")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("DiemChuyenCan")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("DiemKiemTra")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("DiemChuyenCanMoi")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("DiemKiemTraMoi")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("DiemKiemTra")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("DiemKiemTraMoi")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("LyDo")
                         .IsRequired()
@@ -355,7 +392,7 @@ namespace QuanLyDiem.Migrations
 
                     b.HasKey("MaYeuCauSuaDiem");
 
-                    b.HasIndex("DiemChuyenCan");
+                    b.HasIndex("BangDiemMaBangDiem");
 
                     b.HasIndex("MaGiangVien");
 
@@ -374,13 +411,21 @@ namespace QuanLyDiem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("QuanLyDiem.Models.LopHocPhan", "LopHocPhan")
+                        .WithMany("BangDiem")
+                        .HasForeignKey("MaLopHocPhan")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("QuanLyDiem.Models.SinhVien", "SinhVien")
-                        .WithMany()
+                        .WithMany("BangDiem")
                         .HasForeignKey("MaSinhVien")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("HocPhan");
+
+                    b.Navigation("LopHocPhan");
 
                     b.Navigation("SinhVien");
                 });
@@ -433,6 +478,10 @@ namespace QuanLyDiem.Migrations
                         .HasForeignKey("MaChuyenNganh")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("QuanLyDiem.Models.SinhVien", null)
+                        .WithMany("HocPhan")
+                        .HasForeignKey("SinhVienMaSinhVien");
 
                     b.Navigation("ChuyenNganh");
                 });
@@ -487,9 +536,7 @@ namespace QuanLyDiem.Migrations
                 {
                     b.HasOne("QuanLyDiem.Models.BangDiem", "BangDiem")
                         .WithMany()
-                        .HasForeignKey("DiemThi")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BangDiemMaBangDiem");
 
                     b.HasOne("QuanLyDiem.Models.HocPhan", "HocPhan")
                         .WithMany()
@@ -514,9 +561,7 @@ namespace QuanLyDiem.Migrations
                 {
                     b.HasOne("QuanLyDiem.Models.BangDiem", "BangDiem")
                         .WithMany()
-                        .HasForeignKey("DiemChuyenCan")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BangDiemMaBangDiem");
 
                     b.HasOne("QuanLyDiem.Models.GiangVien", "GianhVien")
                         .WithMany()
@@ -543,6 +588,18 @@ namespace QuanLyDiem.Migrations
                     b.Navigation("HocPhan");
 
                     b.Navigation("SinhVien");
+                });
+
+            modelBuilder.Entity("QuanLyDiem.Models.LopHocPhan", b =>
+                {
+                    b.Navigation("BangDiem");
+                });
+
+            modelBuilder.Entity("QuanLyDiem.Models.SinhVien", b =>
+                {
+                    b.Navigation("BangDiem");
+
+                    b.Navigation("HocPhan");
                 });
 #pragma warning restore 612, 618
         }
