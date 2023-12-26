@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 
 
-
 namespace QuanLyDiem.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -31,9 +31,23 @@ namespace QuanLyDiem.Controllers
                           Problem("Entity set 'ApplicationDbContext.User'  is null.");
         }
 
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            var username = User.Identity.Name;
+            var user = await _context.User.FirstOrDefaultAsync(u => u.username == username);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
         // GET: User/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            
             if (id == null || _context.User == null)
             {
                 return NotFound();

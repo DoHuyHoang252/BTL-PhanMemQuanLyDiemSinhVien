@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using QuanLyDiem.Models.Process;
 
 namespace QuanLyDiem.Controllers
 {
+    [Authorize]
     public class LopHocPhanController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -223,7 +225,7 @@ namespace QuanLyDiem.Controllers
         }
         public IActionResult Download()
         {
-            var fileName = "YourFileName" + ".xlsx";
+            var fileName = "lophocphan" + ".xlsx";
             using(ExcelPackage excelPackage = new ExcelPackage())
             {
                 ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");

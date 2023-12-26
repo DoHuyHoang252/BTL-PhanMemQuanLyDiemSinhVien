@@ -22,13 +22,16 @@
                     <table id="myTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th onclick="sortTable(0)" class="column_name" style="width:40%">
+                                <th onclick="sortTable(0)" class="column_name" style="width:15%">
+                                    Mã học phần
+                                </th>
+                                <th onclick="sortTable(1)" class="column_name" style="width:30%">
                                     Tên học phần
                                 </th>
-                                <th onclick="sortTable(1)" class="column_name" style="width:10%">
+                                <th onclick="sortTable(2)" class="column_name" style="width:10%">
                                     Số tín chỉ
                                 </th>
-                                <th onclick="sortTable(2)" class="column_name" style="width:35%">
+                                <th onclick="sortTable(3)" class="column_name" style="width:30%">
                                     Chuyên ngành
                                 </th>
                                 <th style="width:15%"></th>
@@ -37,6 +40,9 @@
                         <tbody>
                     @foreach (var item in Model) {
                             <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MaHocPhan)
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TenHocPhan)
                                 </td>

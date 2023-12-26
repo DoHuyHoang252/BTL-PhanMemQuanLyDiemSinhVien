@@ -19,5 +19,10 @@ namespace QuanLyDiem.Data
         public DbSet<QuanLyDiem.Models.YeuCauPhucKhao> YeuCauPhucKhao { get; set; } = default!;
         public DbSet<QuanLyDiem.Models.YeuCauSuaDiem> YeuCauSuaDiem { get; set; } = default!;
         public DbSet<QuanLyDiem.Models.User> User { get; set; } = default!;
+
+        public async Task<User> GetUserAsync(string username, string password)
+        {
+            return await User.FirstOrDefaultAsync(u => u.username == username && u.password == password);
+        }
     }
 }
