@@ -11,6 +11,7 @@ using OfficeOpenXml.Drawing.Slicer.Style;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
 using QuanLyDiem.Models.Process;
+using X.PagedList;
 
 namespace QuanLyDiem.Controllers
 {
@@ -26,10 +27,29 @@ namespace QuanLyDiem.Controllers
         }
 
         // GET: BangDiem
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? PageSize, string searchText)
         {
-            var applicationDbContext = _context.BangDiem.Include(d => d.HocPhan).Include(d => d.LopHocPhan).Include(d => d.SinhVien);
-            return View(await applicationDbContext.ToListAsync());
+            int pageNumber = (page ?? 1); 
+            int defaultPageSize = 5; 
+            int actualPageSize = PageSize ?? defaultPageSize;
+            var query = _context.BangDiem.Include(d => d.HocPhan).Include(d => d.LopHocPhan).Include(d => d.SinhVien).AsQueryable();
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(d => d.MaHocPhan.Contains(searchText) || d.TenHocPhan.Contains(searchText) || d.MaSinhVien.Contains(searchText) || d.TenSinhVien.Contains(searchText));
+            }
+            var bangDiem = await query.ToListAsync();
+            if (actualPageSize == -1)
+            {
+                actualPageSize = bangDiem.Count;
+            }
+
+            var totalCount = bangDiem.Count;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.pageSize = actualPageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.SearchTerm = searchText;
+            return View(bangDiem.ToPagedList(pageNumber, actualPageSize));
         }
 
         public async Task<IActionResult> Details(int? id)

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Theory\\Word - Subjects\\BTL_PTPMQL\\QuanLyDiem\\QuanLyDiem.csproj": {}
+    "D:\\Theory\\Word - Subjects\\BTL_PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj": {}
   },
   "projects": {
-    "D:\\Theory\\Word - Subjects\\BTL_PTPMQL\\QuanLyDiem\\QuanLyDiem.csproj": {
+    "D:\\Theory\\Word - Subjects\\BTL_PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Theory\\Word - Subjects\\BTL_PTPMQL\\QuanLyDiem\\QuanLyDiem.csproj",
+        "projectUniqueName": "D:\\Theory\\Word - Subjects\\BTL_PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj",
         "projectName": "QuanLyDiem",
-        "projectPath": "D:\\Theory\\Word - Subjects\\BTL_PTPMQL\\QuanLyDiem\\QuanLyDiem.csproj",
+        "projectPath": "D:\\Theory\\Word - Subjects\\BTL_PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj",
         "packagesPath": "C:\\Users\\hoang\\.nuget\\packages\\",
-        "outputPath": "D:\\Theory\\Word - Subjects\\BTL_PTPMQL\\QuanLyDiem\\obj\\",
+        "outputPath": "D:\\Theory\\Word - Subjects\\BTL_PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hoang\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -77,6 +77,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[7.0.11, )"
+            },
+            "X.PagedList.Mvc.Core": {
+              "target": "Package",
+              "version": "[8.4.7, )"
             }
           },
           "imports": [

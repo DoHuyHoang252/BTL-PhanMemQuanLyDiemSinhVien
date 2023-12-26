@@ -585,3 +585,12 @@ D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\bi
 D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll
 D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\obj\Debug\net7.0\QuanLyDiem.sourcelink.json
+D:\Theory\Word - Subjects\BTL_PTPMQL\QuanLyDiem\obj\Debug\net7.0\QuanLyDiem.sourcelink.json
+D:\Theory\Word - Subjects\BTL_PTPMQL\QuanLyDiem\bin\Debug\net7.0\JetBrains.Annotations.dll
+D:\Theory\Word - Subjects\BTL_PTPMQL\QuanLyDiem\bin\Debug\net7.0\X.PagedList.dll
+D:\Theory\Word - Subjects\BTL_PTPMQL\QuanLyDiem\bin\Debug\net7.0\X.PagedList.Mvc.Core.dll
+D:\Theory\Word - Subjects\BTL_PTPMQL\QuanLyDiem\obj\Debug\net7.0\QuanLyDiem.MvcApplicationPartsAssemblyInfo.cs
+D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\bin\Debug\net7.0\JetBrains.Annotations.dll
+D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\bin\Debug\net7.0\X.PagedList.dll
+D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\bin\Debug\net7.0\X.PagedList.Mvc.Core.dll
+D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\obj\Debug\net7.0\QuanLyDiem.MvcApplicationPartsAssemblyInfo.cs

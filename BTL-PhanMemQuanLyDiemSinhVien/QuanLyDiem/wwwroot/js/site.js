@@ -3,18 +3,15 @@
 
 // Write your JavaScript code.
 
-
-
 $(document).ready(function () {
   $('#myTable').DataTable({
-      "pagingType": "simple_numbers",
-      "lengthMenu": [[5, 10, 20, -1], [5, 10, 20, "Tất cả"]],
+      "info": false,
+      "paging": false,
+      "searching": false,
       "language": {
         "search": "Tìm kiếm:",
         "infoFiltered": "(đã lọc từ _MAX_ bản ghi)",
         "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
-        "infoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
-        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
         "sLengthMenu": "Hiển thị _MENU_ bản ghi",
         "paginate": {
             "previous": "Trước",
@@ -85,58 +82,58 @@ document.addEventListener('DOMContentLoaded', function () {
 // function sortTable(columnIndex) {
 //     $('#myTable').DataTable().order([columnIndex, $('#myTable').DataTable().order()[0][1] === 'asc' ? 'desc' : 'asc']).draw();
 // }
-function sortTable(n) {
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("myTable");
-    switching = true;
-    //Set the sorting direction to ascending:
-    dir = "asc"; 
-    /*Make a loop that will continue until
-    no switching has been done:*/
-    while (switching) {
-      //start by saying: no switching is done:
-      switching = false;
-      rows = table.rows;
-      /*Loop through all table rows (except the
-      first, which contains table headers):*/
-      for (i = 1; i < (rows.length - 1); i++) {
-        //start by saying there should be no switching:
-        shouldSwitch = false;
-        /*Get the two elements you want to compare,
-        one from current row and one from the next:*/
-        x = rows[i].getElementsByTagName("TD")[n];
-        y = rows[i + 1].getElementsByTagName("TD")[n];
-        /*check if the two rows should switch place,
-        based on the direction, asc or desc:*/
-        if (dir == "asc") {
-          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-            //if so, mark as a switch and break the loop:
-            shouldSwitch= true;
-            break;
-          }
-        } else if (dir == "desc") {
-          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-            //if so, mark as a switch and break the loop:
-            shouldSwitch = true;
-            break;
-          }
-        }
-      }
-      if (shouldSwitch) {
-        /*If a switch has been marked, make the switch
-        and mark that a switch has been done:*/
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-        //Each time a switch is done, increase this count by 1:
-        switchcount ++;      
-      } else {
-        /*If no switching has been done AND the direction is "asc",
-        set the direction to "desc" and run the while loop again.*/
-        if (switchcount == 0 && dir == "asc") {
-          dir = "desc";
-          switching = true;
-        }
-      }
-    }
-  }
+// function sortTable(n) {
+//     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+//     table = document.getElementById("myTable");
+//     switching = true;
+//     //Set the sorting direction to ascending:
+//     dir = "asc"; 
+//     /*Make a loop that will continue until
+//     no switching has been done:*/
+//     while (switching) {
+//       //start by saying: no switching is done:
+//       switching = false;
+//       rows = table.rows;
+//       /*Loop through all table rows (except the
+//       first, which contains table headers):*/
+//       for (i = 1; i < (rows.length - 1); i++) {
+//         //start by saying there should be no switching:
+//         shouldSwitch = false;
+//         /*Get the two elements you want to compare,
+//         one from current row and one from the next:*/
+//         x = rows[i].getElementsByTagName("TD")[n];
+//         y = rows[i + 1].getElementsByTagName("TD")[n];
+//         /*check if the two rows should switch place,
+//         based on the direction, asc or desc:*/
+//         if (dir == "asc") {
+//           if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+//             //if so, mark as a switch and break the loop:
+//             shouldSwitch= true;
+//             break;
+//           }
+//         } else if (dir == "desc") {
+//           if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+//             //if so, mark as a switch and break the loop:
+//             shouldSwitch = true;
+//             break;
+//           }
+//         }
+//       }
+//       if (shouldSwitch) {
+//         /*If a switch has been marked, make the switch
+//         and mark that a switch has been done:*/
+//         rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+//         switching = true;
+//         //Each time a switch is done, increase this count by 1:
+//         switchcount ++;      
+//       } else {
+//         /*If no switching has been done AND the direction is "asc",
+//         set the direction to "desc" and run the while loop again.*/
+//         if (switchcount == 0 && dir == "asc") {
+//           dir = "desc";
+//           switching = true;
+//         }
+//       }
+//     }
+// }
   
