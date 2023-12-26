@@ -1,0 +1,93 @@
+@model IEnumerable<QuanLyDiem.Models.YeuCauSuaDiem>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Danh sách yêu cầu sửa điểm</h3>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card w3-round-large">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="w3-right"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Tạo mới yêu cầu sửa điểm</a></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="w3-left"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Download">Tải về danh sách</a></div>
+                    </div>
+                </div>                
+                <div class="table-responsive m-t-40 ">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)" class="column_name" style="width:15%">
+                                    Giảng viên
+                                </th>
+                                <th onclick="sortTable(1)" class="column_name" style="width:15%">
+                                    Sinh viên
+                                </th>
+                                <th onclick="sortTable(2)" class="column_name" style="width:15%">
+                                    Học phần
+                                </th>
+                                <th onclick="sortTable(3)" class="column_name" style="width:15%">
+                                    Lý do
+                                </th>
+                                <th onclick="sortTable(4)" class="column_name" style="width:15%">
+                                    Trạng thái
+                                </th>
+                                <th style="width:15%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    @foreach (var item in Model) {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GiangVien.TenGiangVien)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MaSinhVien)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HocPhan.TenHocPhan)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LyDo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TrangThai)
+                                </td>
+                                <td >
+                                    <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Edit" asp-route-id="@item.MaYeuCauSuaDiem">Sửa</a>
+                                    <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Delete"  asp-route-id="@item.MaYeuCauSuaDiem">Xóa</a>
+                                    <button class="btn btn-outline-info w3-medium w3-round-large btn-details" data-id="@item.MaYeuCauSuaDiem"><i class="bi bi-list-ul"></i></button>
+                                </td>
+                            </tr>
+                    }
+                        </tbody>
+                    </table>
+                    <!-- Thêm modal Bootstrap cho YeuCauSuaDiem -->
+                    <div class="modal fade" id="yeuCauModal" tabindex="-1" role="dialog" aria-labelledby="yeuCauModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Đây là nơi để hiển thị thông tin yêu cầu sửa điểm -->
+                                    <div id="yeuCauModalContent"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-info w3-medium w3-round-large" data-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

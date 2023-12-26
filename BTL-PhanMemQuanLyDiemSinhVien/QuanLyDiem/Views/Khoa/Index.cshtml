@@ -1,0 +1,48 @@
+@model IEnumerable<QuanLyDiem.Models.Khoa>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Danh sách khoa</h3>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card w3-round-large">
+            <div class="card-body">
+                <div class="w3-center"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Tạo mới khoa</a></div>
+                <div class="table-responsive m-t-40 ">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)" class="column_name" style="width: 15%">
+                                    Mã khoa
+                                </th>
+                                <th onclick="sortTable(1)" class="column_name" style="width: 70%">
+                                    Tên khoa
+                                </th>
+                                <th style="width:15%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    @foreach (var item in Model) {
+                            <tr>
+                                <td >
+                                    @Html.DisplayFor(modelItem => item.MaKhoa)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenKhoa)
+                                </td>
+                                <td >
+                                    <a class="btn btn-outline-info w3-round-large w3-medium" asp-action="Edit" asp-route-id="@item.MaKhoa">Sửa</a>
+                                    <a class="btn btn-outline-info w3-round-large w3-medium" asp-action="Delete"  asp-route-id="@item.MaKhoa">Xóa</a>
+                                </td>
+                            </tr>
+                    }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

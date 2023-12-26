@@ -1,0 +1,51 @@
+@model IEnumerable<QuanLyDiem.Models.HocKy>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Danh sách học kỳ</h3>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="w3-center"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Tạo mới học kỳ</a></div>
+                </div>    
+                <div class="table-responsive m-t-40 ">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)" class="column_name" style="width:42%">
+                                    Tên học kỳ
+                                </th>
+                                <th onclick="sortTable(1)" class="column_name" style="width:42%">
+                                    Khóa học
+                                </th>
+                                <th style="width:16%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    @foreach (var item in Model) {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenHocKy)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.KhoaHoc.TenKhoaHoc)
+                                </td>
+                            <td>
+                                <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Edit" asp-route-id="@item.MaHocKy">Sửa</a>
+                                <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Delete"  asp-route-id="@item.MaHocKy">Xóa</a>
+                            </td>
+                            </tr>
+                    }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

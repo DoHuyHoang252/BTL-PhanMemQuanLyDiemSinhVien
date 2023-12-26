@@ -1,0 +1,73 @@
+@model IEnumerable<QuanLyDiem.Models.GiangVien>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Danh sách giảng viên</h3>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="w3-right"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Tạo mới giảng viên</a></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="w3-left"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Download">Tải về danh sách</a></div>
+                    </div>
+                </div>    
+                <div class="table-responsive m-t-40 ">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)" class="column_name" style="width:20%">
+                                    Tên giảng viên
+                                </th>
+                                <th onclick="sortTable(1)" class="column_name" style="width:10%">
+                                    Giới tính
+                                </th>
+                                <th onclick="sortTable(2)" class="column_name" style="width:10%">
+                                    Ngày sinh
+                                </th>
+                                <th onclick="sortTable(3)" class="column_name" style="width:20%">
+                                    Khoa
+                                </th>
+                                <th onclick="sortTable(4)" class="column_name" style="width:20%">
+                                    Chuyên ngành
+                                </th>
+                                <th style="width:13%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    @foreach (var item in Model) {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenGiangVien)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GioiTinh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NgaySinh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Khoa.TenKhoa)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChuyenNganh.TenChuyenNganh)
+                                </td>
+                            <td>
+                                <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Edit" asp-route-id="@item.MaGiangVien">Sửa</a>
+                                <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Delete"  asp-route-id="@item.MaGiangVien">Xóa</a>
+                            </td>
+                            </tr>
+                    }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

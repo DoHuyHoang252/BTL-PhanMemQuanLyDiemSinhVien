@@ -1,0 +1,73 @@
+@model IEnumerable<QuanLyDiem.Models.YeuCauPhucKhao>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Danh sách phúc khảo</h3>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card w3-round-large">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="w3-right"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Tạo mới yêu cầu phúc khảo</a></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="w3-left"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Download">Tải về danh sách</a></div>
+                    </div>
+                </div
+                <div class="table-responsive m-t-40 ">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)" class="column_name" style="width: 15%">
+                                    Sinh viên
+                                </th>
+                                <th onclick="sortTable(1)" class="column_name" style="width: 25%">
+                                    Học phần
+                                </th>
+                                <th onclick="sortTable(2)" class="column_name" style="width: 10%">
+                                    Điểm thi
+                                </th>
+                                <th onclick="sortTable(3)" class="column_name" style="width: 25%">
+                                    Lý do
+                                </th>
+                                <th onclick="sortTable(4)" class="column_name" style="width: 10%">
+                                    Trạng thái
+                                </th>
+                                <th style="width:15%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    @foreach (var item in Model) {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SinhVien.TenSinhVien)
+                                </td>
+                                <td >
+                                    @Html.DisplayFor(modelItem => item.HocPhan.TenHocPhan)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiemThi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LyDo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TrangThai)
+                                </td>
+                                <td >
+                                    <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Edit" asp-route-id="@item.MaYeuCauPhucKhao">Sửa</a>
+                                    <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Delete"  asp-route-id="@item.MaYeuCauPhucKhao">Xóa</a>
+                                </td>
+                            </tr>
+                    }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
