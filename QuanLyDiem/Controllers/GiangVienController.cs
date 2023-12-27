@@ -10,6 +10,7 @@ using OfficeOpenXml;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
 using QuanLyDiem.Models.Process;
+using X.PagedList; 
 
 namespace QuanLyDiem.Controllers
 {
@@ -24,10 +25,29 @@ namespace QuanLyDiem.Controllers
         }
 
         // GET: GiangVien
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? PageSize, string searchText)
         {
-            var applicationDbContext = _context.GiangVien.Include(g => g.ChuyenNganh).Include(g => g.Khoa);
-            return View(await applicationDbContext.ToListAsync());
+            int pageNumber = (page ?? 1); 
+            int defaultPageSize = 5; 
+            int actualPageSize = PageSize ?? defaultPageSize;
+            var query = _context.GiangVien.Include(g => g.ChuyenNganh).Include(g => g.Khoa).AsQueryable();
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(d => d.TenGiangVien.Contains(searchText) || d.MaChuyenNganh.Contains(searchText) | d.MaKhoa.Contains(searchText));
+            }
+            var giangVien = await query.ToListAsync();
+            if (actualPageSize == -1)
+            {
+                actualPageSize = giangVien.Count;
+            }
+
+            var totalCount = giangVien.Count;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.pageSize = actualPageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.SearchTerm = searchText;
+            return View(giangVien.ToPagedList(pageNumber, actualPageSize));
         }
 
         // GET: GiangVien/Details/5

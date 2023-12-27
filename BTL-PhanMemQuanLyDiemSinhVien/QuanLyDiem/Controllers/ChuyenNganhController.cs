@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
+using X.PagedList; 
 
 namespace QuanLyDiem.Controllers
 {
@@ -22,10 +23,29 @@ namespace QuanLyDiem.Controllers
         }
 
         // GET: ChuyenNganh
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? PageSize, string searchText)
         {
-            var applicationDbContext = _context.ChuyenNganh.Include(c => c.Khoa);
-            return View(await applicationDbContext.ToListAsync());
+            int pageNumber = (page ?? 1); 
+            int defaultPageSize = 5; 
+            int actualPageSize = PageSize ?? defaultPageSize;
+            var query = _context.ChuyenNganh.Include(c => c.Khoa).AsQueryable();
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(d => d.TenChuyenNganh.Contains(searchText) || d.MaKhoa.Contains(searchText));
+            }
+            var chuyenNganh = await query.ToListAsync();
+            if (actualPageSize == -1)
+            {
+                actualPageSize = chuyenNganh.Count;
+            }
+
+            var totalCount = chuyenNganh.Count;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.pageSize = actualPageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.SearchTerm = searchText;
+            return View(chuyenNganh.ToPagedList(pageNumber, actualPageSize));
         }
         // GET: ChuyenNganh/Create
         public IActionResult Create()

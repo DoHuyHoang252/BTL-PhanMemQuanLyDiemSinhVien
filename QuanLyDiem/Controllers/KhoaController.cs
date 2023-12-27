@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
+using X.PagedList; 
 
 namespace QuanLyDiem.Controllers
 {
@@ -22,11 +23,29 @@ namespace QuanLyDiem.Controllers
         }
 
         // GET: Khoa
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? PageSize, string searchText)
         {
-              return _context.Khoa != null ? 
-                          View(await _context.Khoa.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Khoa'  is null.");
+            int pageNumber = (page ?? 1); 
+            int defaultPageSize = 5; 
+            int actualPageSize = PageSize ?? defaultPageSize;
+            var query = _context.Khoa.AsQueryable();
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(d => d.MaKhoa.Contains(searchText) || d.TenKhoa.Contains(searchText));
+            }
+            var Khoa = await query.ToListAsync();
+            if (actualPageSize == -1)
+            {
+                actualPageSize = Khoa.Count;
+            }
+
+            var totalCount = Khoa.Count;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.pageSize = actualPageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.SearchTerm = searchText;
+            return View(Khoa.ToPagedList(pageNumber, actualPageSize));
         }
 
         // GET: Khoa/Create

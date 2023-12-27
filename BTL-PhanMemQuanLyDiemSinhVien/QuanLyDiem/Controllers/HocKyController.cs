@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
+using X.PagedList; 
 
 namespace QuanLyDiem.Controllers
 {
@@ -22,10 +23,29 @@ namespace QuanLyDiem.Controllers
         }
 
         // GET: HocKy
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? PageSize, string searchText)
         {
-            var applicationDbContext = _context.HocKy.Include(h => h.KhoaHoc);
-            return View(await applicationDbContext.ToListAsync());
+            int pageNumber = (page ?? 1); 
+            int defaultPageSize = 5; 
+            int actualPageSize = PageSize ?? defaultPageSize;
+            var query = _context.HocKy.Include(h => h.KhoaHoc).AsQueryable();
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(d => d.TenHocKy.Contains(searchText) || d.MaKhoaHoc.Contains(searchText));
+            }
+            var hocKy = await query.ToListAsync();
+            if (actualPageSize == -1)
+            {
+                actualPageSize = hocKy.Count;
+            }
+
+            var totalCount = hocKy.Count;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.pageSize = actualPageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.SearchTerm = searchText;
+            return View(hocKy.ToPagedList(pageNumber, actualPageSize));
         }
 
         // GET: HocKy/Details/5

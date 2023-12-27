@@ -10,6 +10,7 @@ using OfficeOpenXml;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
 using QuanLyDiem.Models.Process;
+using X.PagedList; 
 
 namespace QuanLyDiem.Controllers
 {
@@ -25,11 +26,31 @@ namespace QuanLyDiem.Controllers
         }
 
         // GET: HocPhantroller
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? PageSize, string searchText)
         {
-            var applicationDbContext = _context.HocPhan.Include(h => h.ChuyenNganh);
-            return View(await applicationDbContext.ToListAsync());
+            int pageNumber = (page ?? 1); 
+            int defaultPageSize = 5; 
+            int actualPageSize = PageSize ?? defaultPageSize;
+            var query = _context.HocPhan.Include(h => h.ChuyenNganh).AsQueryable();
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(d => d.MaHocPhan.Contains(searchText) || d.TenHocPhan.Contains(searchText) || d.MaChuyenNganh.Contains(searchText));
+            }
+            var hocPhan = await query.ToListAsync();
+            if (actualPageSize == -1)
+            {
+                actualPageSize = hocPhan.Count;
+            }
+
+            var totalCount = hocPhan.Count;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.pageSize = actualPageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.SearchTerm = searchText;
+            return View(hocPhan.ToPagedList(pageNumber, actualPageSize));
         }
+
 
         // GET: HocPhantroller/Create
         public IActionResult Create()
