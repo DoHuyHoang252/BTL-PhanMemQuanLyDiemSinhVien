@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-
+using X.PagedList;
 
 namespace QuanLyDiem.Controllers
 {
@@ -24,11 +24,31 @@ namespace QuanLyDiem.Controllers
         }
 
         // GET: User
-        public async Task<IActionResult> Index()
+        
+        public async Task<IActionResult> Index(int? page, int? PageSize, string searchText)
         {
-              return _context.User != null ? 
-                          View(await _context.User.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.User'  is null.");
+            int pageNumber = (page ?? 1); 
+            int defaultPageSize = 5; 
+            int actualPageSize = PageSize ?? defaultPageSize;
+            var query = _context.User.AsQueryable();
+            
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(d => d.username.Contains(searchText) || d.firstName.Contains(searchText) || d.lastName.Contains(searchText));
+            }
+            var User = await query.ToListAsync();
+            if (actualPageSize == -1)
+            {
+                actualPageSize = User.Count;
+            }
+
+            var totalCount = User.Count;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.pageSize = actualPageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.SearchTerm = searchText;
+            return View(User.ToPagedList(pageNumber, actualPageSize));
         }
 
         [Authorize]

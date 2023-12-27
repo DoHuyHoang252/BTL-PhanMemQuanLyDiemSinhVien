@@ -12993,19 +12993,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {}
+    "C:\\Users\\lhcii\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\BTL-PhanMemQuanLyDiemSinhVien\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj",
+      "projectUniqueName": "D:\\BTL-PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj",
       "projectName": "QuanLyDiem",
-      "projectPath": "D:\\BTL-PhanMemQuanLyDiemSinhVien\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "D:\\BTL-PhanMemQuanLyDiemSinhVien\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\obj\\",
+      "projectPath": "D:\\BTL-PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\QuanLyDiem.csproj",
+      "packagesPath": "C:\\Users\\lhcii\\.nuget\\packages\\",
+      "outputPath": "D:\\BTL-PTPMQL\\BTL-PhanMemQuanLyDiemSinhVien\\BTL-PhanMemQuanLyDiemSinhVien\\QuanLyDiem\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\lhcii\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -13085,6 +13085,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[7.0.14, 7.0.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[7.0.14, 7.0.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[7.0.14, 7.0.14]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[7.0.14, 7.0.14]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -13093,7 +13111,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   },

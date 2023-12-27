@@ -10,6 +10,7 @@ using OfficeOpenXml;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
 using QuanLyDiem.Models.Process;
+using X.PagedList;
 
 namespace QuanLyDiem.Controllers
 {
@@ -25,10 +26,30 @@ namespace QuanLyDiem.Controllers
         }
 
         // GET: LopHocPhan
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? PageSize, string searchText)
         {
-            var applicationDbContext = _context.LopHocPhan.Include(l => l.BangDiem).Include(l => l.GiangVien).Include(l => l.HocKy).Include(l => l.HocPhan);
-            return View(await applicationDbContext.ToListAsync());
+            int pageNumber = (page ?? 1); 
+            int defaultPageSize = 5; 
+            int actualPageSize = PageSize ?? defaultPageSize;
+            var query =_context.LopHocPhan.Include(l => l.BangDiem).Include(l => l.GiangVien).Include(l => l.HocKy).Include(l => l.HocPhan).AsQueryable();
+            
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(d => d.MaHocPhan.Contains(searchText) || d.TenLopHocPhan.Contains(searchText)|| d.MaGiangVien.Contains(searchText));
+            }
+            var LopHocPhan = await query.ToListAsync();
+            if (actualPageSize == -1)
+            {
+                actualPageSize = LopHocPhan.Count;
+            }
+
+            var totalCount = LopHocPhan.Count;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.pageSize = actualPageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.SearchTerm = searchText;
+            return View(LopHocPhan.ToPagedList(pageNumber, actualPageSize));
         }
 
         // GET: LopHocPhan/Details/5

@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
+using X.PagedList;
 
 namespace QuanLyDiem.Controllers
 {
@@ -22,12 +24,31 @@ namespace QuanLyDiem.Controllers
         }
 
         // GET: KhoaHoc
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? PageSize, string searchText)
         {
-              return _context.KhoaHoc != null ? 
-                          View(await _context.KhoaHoc.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.KhoaHoc'  is null.");
+            int pageNumber = (page ?? 1); 
+            int defaultPageSize = 5; 
+            int actualPageSize = PageSize ?? defaultPageSize;
+            var query =_context.KhoaHoc.AsQueryable();
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(d => d.TenKhoaHoc.Contains(searchText));
+            }
+            var khoaHoc = await query.ToListAsync();
+            if (actualPageSize == -1)
+            {
+                actualPageSize = khoaHoc.Count;
+            }
+
+            var totalCount = khoaHoc.Count;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.pageSize = actualPageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.SearchTerm = searchText;
+            return View(khoaHoc.ToPagedList(pageNumber, actualPageSize));
         }
+
 
         // GET: KhoaHoc/Create
         public IActionResult Create()

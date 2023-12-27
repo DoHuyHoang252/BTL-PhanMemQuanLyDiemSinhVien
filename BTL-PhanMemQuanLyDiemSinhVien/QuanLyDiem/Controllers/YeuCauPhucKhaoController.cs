@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyDiem.Data;
 using QuanLyDiem.Models;
+using X.PagedList;
 
 namespace QuanLyDiem.Controllers
 {
@@ -22,10 +23,30 @@ namespace QuanLyDiem.Controllers
         }
 
         // GET: YeuCauPhucKhao
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? PageSize, string searchText)
         {
-            var applicationDbContext = _context.YeuCauPhucKhao.Include(y => y.BangDiem).Include(y => y.HocPhan).Include(y => y.SinhVien);
-            return View(await applicationDbContext.ToListAsync());
+            int pageNumber = (page ?? 1); 
+            int defaultPageSize = 5; 
+            int actualPageSize = PageSize ?? defaultPageSize;
+            var query =_context.YeuCauPhucKhao.Include(y => y.BangDiem).Include(y => y.HocPhan).Include(y => y.SinhVien).AsQueryable();
+            
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(d => d.MaHocPhan.Contains(searchText) || d.MaSinhVien.Contains(searchText));
+            }
+            var YeuCauPhucKhao = await query.ToListAsync();
+            if (actualPageSize == -1)
+            {
+                actualPageSize = YeuCauPhucKhao.Count;
+            }
+
+            var totalCount = YeuCauPhucKhao.Count;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.pageSize = actualPageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.SearchTerm = searchText;
+            return View(YeuCauPhucKhao.ToPagedList(pageNumber, actualPageSize));
         }
 
         // GET: YeuCauPhucKhao/Details/5
