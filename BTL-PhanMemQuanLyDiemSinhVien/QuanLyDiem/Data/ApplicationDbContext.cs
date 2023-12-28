@@ -24,5 +24,7 @@ namespace QuanLyDiem.Data
         {
             return await User.FirstOrDefaultAsync(u => u.username == username && u.password == password);
         }
+
+        public DbSet<QuanLyDiem.Models.DiemRenLuyen> DiemRenLuyen { get; set; } = default!;
     }
 }

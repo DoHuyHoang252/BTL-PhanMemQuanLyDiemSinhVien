@@ -101,7 +101,7 @@ namespace QuanLyDiem.Controllers
                 {
                     bangDiem.TenSinhVien = selectedSinhVien.TenSinhVien;
                 }
-                if (!_context.BangDiem.Any(b => b.MaSinhVien == bangDiem.MaSinhVien && b.MaHocPhan == bangDiem.MaHocPhan))
+                if (!_context.BangDiem.Any(b => b.MaSinhVien == bangDiem.MaSinhVien && b.MaHocPhan == bangDiem.MaHocPhan || b.MaSinhVien == bangDiem.MaSinhVien && b.MaLopHocPhan == bangDiem.MaLopHocPhan))
                 {
                     _context.Add(bangDiem);
                     await _context.SaveChangesAsync();

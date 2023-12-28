@@ -887,3 +887,7 @@ D:\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\obj\Debug\net7.0\refint\QuanLyDiem.d
 D:\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\obj\Debug\net7.0\QuanLyDiem.pdb
 D:\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\obj\Debug\net7.0\QuanLyDiem.genruntimeconfig.cache
 D:\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\obj\Debug\net7.0\ref\QuanLyDiem.dll
+D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\bin\Debug\net7.0\JetBrains.Annotations.dll
+D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\bin\Debug\net7.0\X.PagedList.dll
+D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\bin\Debug\net7.0\X.PagedList.Mvc.Core.dll
+D:\Theory\Word - Subjects\BTL_PTPMQL\BTL-PhanMemQuanLyDiemSinhVien\QuanLyDiem\obj\Debug\net7.0\QuanLyDiem.MvcApplicationPartsAssemblyInfo.cs

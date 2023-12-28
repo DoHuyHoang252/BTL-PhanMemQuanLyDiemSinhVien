@@ -1,20 +1,24 @@
-@model IEnumerable<QuanLyDiem.Models.ChuyenNganh>
+@model IEnumerable<QuanLyDiem.Models.DiemRenLuyen>
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
-
 @{
     ViewData["Title"] = "Index";
 }
 
-<h3>Danh sách chuyên ngành</h3>
+<h3>Danh sách điểm rèn luyện</h3>
 
 <div class="row">
     <div class="col-12">
-        <div class="card">
+        <div class="card w3-round-large">
             <div class="card-body">
                 <div class="row">
-                    <div class="w3-center"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Tạo mới chuyên ngành</a></div>
-                </div> 
+                    <div class="col-md-6">
+                        <div class="w3-right"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Create">Tạo mới điểm rèn luyện</a></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="w3-left"><a class="btn w3-round-large w3-medium btn btn-outline-info" asp-action="Download">Tải về danh sách</a></div>
+                    </div>
+                </div>           
                 <div class="row">
                     <div class="col-md-6">
                         <label for="pageSizeDropdown">Số bản ghi trên mỗi trang:</label>
@@ -30,7 +34,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="w3-right">
-                            <form asp-controller="ChuyenNganh" asp-action="Index" method="get">
+                            <form asp-controller="DiemRenLuyen" asp-action="Index" method="get">
                                 <p>
                                     <input class="btn w3-text-black btn-outline-info w3-medium w3-round-large" type="text" name="searchText" />
                                     <input class="btn btn-outline-info w3-medium w3-round-large" type="submit" value="Tìm kiếm" />
@@ -38,37 +42,50 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div>     
                 <div class="table-responsive m-t-40 ">
+                
                     <table id="myTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th onclick="sortTable(0)" class="column_name" style="width:42%">
-                                    Tên chuyên ngành
+                                <th onclick="sortTable(0)" class="column_name" style="width:20%">
+                                    Mã sinh viên
                                 </th>
-                                <th onclick="sortTable(1)" class="column_name" style="width:42%">
-                                    Khoa
+                                <th onclick="sortTable(1)" class="column_name" style="width:25%">
+                                    Tên sinh viên
                                 </th>
-                                <th style="width:16%"></th>
+                                <th onclick="sortTable(2)" class="column_name" style="width:20%">
+                                    Học kỳ
+                                </th>
+                                <th onclick="sortTable(3)" class="column_name" style="width:20%">
+                                    ĐRL
+                                </th>
+                                <th style="width:15%"></th>
                             </tr>
                         </thead>
                         <tbody>
                     @foreach (var item in Model) {
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TenChuyenNganh)
+                                <td >
+                                    @Html.DisplayFor(modelItem => item.MaSinhVien)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Khoa.TenKhoa)
+                                    @Html.DisplayFor(modelItem => item.SinhVien.TenSinhVien)
                                 </td>
-                            <td>
-                                <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Edit" asp-route-id="@item.MaChuyenNganh">Sửa</a>
-                                <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Delete"  asp-route-id="@item.MaChuyenNganh">Xóa</a>
-                            </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HocKy.TenHocKy)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiemRL)
+                                </td>
+                                <td >
+                                    <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Edit" asp-route-id="@item.MaDiemRenLuyen">Sửa</a> |
+                                    <a class="btn btn-outline-info w3-medium w3-round-large" asp-action="Delete"  asp-route-id="@item.MaDiemRenLuyen">Xóa</a>
+                                </td>
                             </tr>
                     }
                         </tbody>
-                    </table>        
+                    </table>
                 </div>
                 <div class="row justify-content-center mt-3">
                     <div class="col-md-6 text-center">
@@ -99,11 +116,11 @@
     function searchData() {
         var searchTerm = document.getElementById("searchBox").value;
         var selectedValue = document.getElementById("pageSizeDropdown").value;
-        window.location.href = "/ChuyenNganh/Index?page=1&pageSize=" + selectedValue + "&search=" + encodeURIComponent(searchTerm);
+        window.location.href = "/DiemRenLuyen/Index?page=1&pageSize=" + selectedValue + "&search=" + encodeURIComponent(searchTerm);
     }
 
     function changePageSize() {
         var selectedValue = document.getElementById("pageSizeDropdown").value;
-        window.location.href = "/ChuyenNganh/Index?page=1&pageSize=" + selectedValue ;
+        window.location.href = "/DiemRenLuyen/Index?page=1&pageSize=" + selectedValue ;
     }
 </script>

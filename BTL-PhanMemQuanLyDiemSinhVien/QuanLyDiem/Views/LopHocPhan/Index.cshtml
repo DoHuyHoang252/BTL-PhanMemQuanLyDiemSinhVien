@@ -95,8 +95,7 @@
                         <p>
                             @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
                             {
-                                <span></span>
-                            }
+                                <span>Kết quả tìm kiếm cho: "<strong>@ViewBag.SearchTerm</strong>"</span>                            }
                             else
                             {
                                 <p>Hiển thị @((ViewBag.CurrentPage - 1) * ViewBag.pageSize + 1 ) đến @((ViewBag.CurrentPage - 1) * ViewBag.pageSize + Model.Count()) của @ViewBag.TotalCount bản ghi</p>
@@ -105,7 +104,7 @@
                     </div>
                 </div>
                 <div class="pagination-container">
-                    <nav aria-label="Page navigation example">
+                    <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
                             @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page, pageSize = ViewBag.PageSize }), new X.PagedList.Web.Common.PagedListRenderOptions { LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
                         </ul>

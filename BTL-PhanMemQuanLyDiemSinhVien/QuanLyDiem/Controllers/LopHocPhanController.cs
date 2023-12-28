@@ -35,7 +35,7 @@ namespace QuanLyDiem.Controllers
             
             if (!string.IsNullOrEmpty(searchText))
             {
-                query = query.Where(d => d.MaHocPhan.Contains(searchText) || d.TenLopHocPhan.Contains(searchText)|| d.MaGiangVien.Contains(searchText));
+                query = query.Where(d => d.HocPhan.TenHocPhan.Contains(searchText) || d.TenLopHocPhan.Contains(searchText)|| d.MaGiangVien.Contains(searchText));
             }
             var LopHocPhan = await query.ToListAsync();
             if (actualPageSize == -1)
@@ -265,6 +265,41 @@ namespace QuanLyDiem.Controllers
                         b.HocPhan.TenHocPhan,
                         b.GiangVien.TenGiangVien,
                         b.HocKy.TenHocKy,
+                    })
+                .ToList();
+                worksheet.Cells["A2"].LoadFromCollection(lopHocPhanList);
+                var stream = new MemoryStream(excelPackage.GetAsByteArray());
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+        }
+        public IActionResult DownloadBangDiemLop(string id)
+        {
+            var fileName = "bangdiemlop" + ".xlsx";
+            using(ExcelPackage excelPackage = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+                worksheet.Cells["A1"].Value = "MaSinhVien";
+                worksheet.Cells["B1"].Value = "TenSinhVien";
+                worksheet.Cells["C1"].Value = "DiemChuyenCan";
+                worksheet.Cells["D1"].Value = "DiemKiemTra";
+                worksheet.Cells["E1"].Value = "DiemThi";
+                worksheet.Cells["F1"].Value = "DiemTong";
+                worksheet.Cells["G1"].Value = "DiemTongHe4";
+                worksheet.Cells["H1"].Value = "DiemChu";
+
+                // Get only the properties you want to include
+                var lopHocPhanList = _context.BangDiem
+                    .Where(b => b.MaLopHocPhan == id)
+                    .Select(b => new
+                    {
+                        b.MaSinhVien,
+                        b.TenSinhVien,
+                        b.DiemChuyenCan,
+                        b.DiemKiemTra,
+                        b.DiemThi,
+                        b.DiemTong,
+                        b.DiemTongHe4,
+                        b.DiemChu,
                     })
                 .ToList();
                 worksheet.Cells["A2"].LoadFromCollection(lopHocPhanList);

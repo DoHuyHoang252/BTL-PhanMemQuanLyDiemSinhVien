@@ -18,121 +18,115 @@ using X.PagedList;
 
 namespace QuanLyDiem.Controllers
 {
-    [Authorize]
-    public class SinhVienController : Controller
+    public class DiemRenLuyenController : Controller
     {
         private readonly ApplicationDbContext _context;
         private ExcelProcess _excelProcess = new ExcelProcess();
 
-        public SinhVienController(ApplicationDbContext context)
+        public DiemRenLuyenController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: SinhVien
+        // GET: DiemRenLuyen
         public async Task<IActionResult> Index(int? page, int? PageSize, string searchText)
         {
             int pageNumber = (page ?? 1); 
             int defaultPageSize = 5; 
             int actualPageSize = PageSize ?? defaultPageSize;
-            var query =_context.SinhVien.Include(s => s.ChuyenNganh).Include(s => s.KhoaHoc).AsQueryable();
+            var query = _context.DiemRenLuyen.Include(d => d.HocKy).Include(d => d.SinhVien).AsQueryable();
             
             if (!string.IsNullOrEmpty(searchText))
             {
-                query = query.Where(d => d.TenSinhVien.Contains(searchText) || d.MaSinhVien.Contains(searchText));
+                query = query.Where(d => d.SinhVien.TenSinhVien.Contains(searchText) || d.MaSinhVien.Contains(searchText));
             }
-            var SinhVien = await query.ToListAsync();
+            var diemRenLuyen = await query.ToListAsync();
             if (actualPageSize == -1)
             {
-                actualPageSize = SinhVien.Count;
+                actualPageSize = diemRenLuyen.Count;
             }
 
-            var totalCount = SinhVien.Count;
+            var totalCount = diemRenLuyen.Count;
 
             ViewBag.CurrentPage = pageNumber;
             ViewBag.pageSize = actualPageSize;
             ViewBag.TotalCount = totalCount;
             ViewBag.SearchTerm = searchText;
-            return View(SinhVien.ToPagedList(pageNumber, actualPageSize));
+            return View(diemRenLuyen.ToPagedList(pageNumber, actualPageSize));
         }
 
-
-        // GET: SinhVien/Details/5
-        public async Task<IActionResult> Details(string? id)
+        // GET: DiemRenLuyen/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.SinhVien == null)
+            if (id == null || _context.DiemRenLuyen == null)
             {
                 return NotFound();
             }
 
-            var sinhVien = await _context.SinhVien
-                .Include(cn => cn.ChuyenNganh)
-                .Include(b => b.BangDiem)
-                    .ThenInclude(bd => bd.LopHocPhan)
-                        .ThenInclude(lhp => lhp.HocKy)
-                .Include(drl => drl.DiemRenLuyen)
-                    .ThenInclude(hk => hk.HocKy)
-                .FirstOrDefaultAsync(m => m.MaSinhVien == id);
-            if (sinhVien == null)
+            var diemRenLuyen = await _context.DiemRenLuyen
+                .Include(d => d.HocKy)
+                .Include(d => d.SinhVien)
+                .FirstOrDefaultAsync(m => m.MaDiemRenLuyen == id);
+            if (diemRenLuyen == null)
             {
                 return NotFound();
             }
 
-            return View(sinhVien);
+            return View(diemRenLuyen);
         }
 
-        // GET: SinhVien/Create
+        // GET: DiemRenLuyen/Create
         public IActionResult Create()
         {
-            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "TenChuyenNganh");
-            ViewData["MaKhoaHoc"] = new SelectList(_context.KhoaHoc, "MaKhoaHoc", "TenKhoaHoc");
+            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "TenHocKy");
+            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "MaSinhVien");
             return View();
         }
 
-        // POST: SinhVien/Create
+        // POST: DiemRenLuyen/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaSinhVien,TenSinhVien,GioiTinh,NgaySinh,TinhTrang,MaChuyenNganh,MaKhoaHoc")] SinhVien sinhVien)
+        public async Task<IActionResult> Create([Bind("MaDiemRenLuyen,DiemRL,MaSinhVien,MaHocKy")] DiemRenLuyen diemRenLuyen)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sinhVien);
+                _context.Add(diemRenLuyen);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "TenChuyenNganh", sinhVien.MaChuyenNganh);
-            ViewData["MaKhoaHoc"] = new SelectList(_context.KhoaHoc, "MaKhoaHoc", "TenKhoaHoc", sinhVien.MaKhoaHoc);
-            return View(sinhVien);
+            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "TenHocKy", diemRenLuyen.MaHocKy);
+            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "MaSinhVien", diemRenLuyen.MaSinhVien);
+            return View(diemRenLuyen);
         }
 
-        // GET: SinhVien/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        // GET: DiemRenLuyen/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.SinhVien == null)
+            if (id == null || _context.DiemRenLuyen == null)
             {
                 return NotFound();
             }
 
-            var sinhVien = await _context.SinhVien.FindAsync(id);
-            if (sinhVien == null)
+            var diemRenLuyen = await _context.DiemRenLuyen.FindAsync(id);
+            if (diemRenLuyen == null)
             {
                 return NotFound();
             }
-            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "TenChuyenNganh", sinhVien.MaChuyenNganh);
-            ViewData["MaKhoaHoc"] = new SelectList(_context.KhoaHoc, "MaKhoaHoc", "TenKhoaHoc", sinhVien.MaKhoaHoc);
-            return View(sinhVien);
+            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "TenHocKy", diemRenLuyen.MaHocKy);
+            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "MaSinhVien", diemRenLuyen.MaSinhVien);
+            return View(diemRenLuyen);
         }
 
-        // POST: SinhVien/Edit/5
+        // POST: DiemRenLuyen/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MaSinhVien,TenSinhVien,GioiTinh,NgaySinh,TinhTrang,MaChuyenNganh,MaKhoaHoc")] SinhVien sinhVien)
+        public async Task<IActionResult> Edit(int id, [Bind("MaDiemRenLuyen,DiemRL,MaSinhVien,MaHocKy")] DiemRenLuyen diemRenLuyen)
         {
-            if (id != sinhVien.MaSinhVien)
+            if (id != diemRenLuyen.MaDiemRenLuyen)
             {
                 return NotFound();
             }
@@ -141,12 +135,12 @@ namespace QuanLyDiem.Controllers
             {
                 try
                 {
-                    _context.Update(sinhVien);
+                    _context.Update(diemRenLuyen);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SinhVienExists(sinhVien.MaSinhVien))
+                    if (!DiemRenLuyenExists(diemRenLuyen.MaDiemRenLuyen))
                     {
                         return NotFound();
                     }
@@ -157,53 +151,53 @@ namespace QuanLyDiem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaChuyenNganh"] = new SelectList(_context.ChuyenNganh, "MaChuyenNganh", "TenChuyenNganh", sinhVien.MaChuyenNganh);
-            ViewData["MaKhoaHoc"] = new SelectList(_context.KhoaHoc, "MaKhoaHoc", "TenKhoaHoc", sinhVien.MaKhoaHoc);
-            return View(sinhVien);
+            ViewData["MaHocKy"] = new SelectList(_context.HocKy, "MaHocKy", "TenHocKy", diemRenLuyen.MaHocKy);
+            ViewData["MaSinhVien"] = new SelectList(_context.SinhVien, "MaSinhVien", "MaSinhVien", diemRenLuyen.MaSinhVien);
+            return View(diemRenLuyen);
         }
 
-        // GET: SinhVien/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        // GET: DiemRenLuyen/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.SinhVien == null)
+            if (id == null || _context.DiemRenLuyen == null)
             {
                 return NotFound();
             }
 
-            var sinhVien = await _context.SinhVien
-                .Include(s => s.ChuyenNganh)
-                .Include(s => s.KhoaHoc)
-                .FirstOrDefaultAsync(m => m.MaSinhVien == id);
-            if (sinhVien == null)
+            var diemRenLuyen = await _context.DiemRenLuyen
+                .Include(d => d.HocKy)
+                .Include(d => d.SinhVien)
+                .FirstOrDefaultAsync(m => m.MaDiemRenLuyen == id);
+            if (diemRenLuyen == null)
             {
                 return NotFound();
             }
 
-            return View(sinhVien);
+            return View(diemRenLuyen);
         }
 
-        // POST: SinhVien/Delete/5
+        // POST: DiemRenLuyen/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.SinhVien == null)
+            if (_context.DiemRenLuyen == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.SinhVien'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.DiemRenLuyen'  is null.");
             }
-            var sinhVien = await _context.SinhVien.FindAsync(id);
-            if (sinhVien != null)
+            var diemRenLuyen = await _context.DiemRenLuyen.FindAsync(id);
+            if (diemRenLuyen != null)
             {
-                _context.SinhVien.Remove(sinhVien);
+                _context.DiemRenLuyen.Remove(diemRenLuyen);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SinhVienExists(string id)
+        private bool DiemRenLuyenExists(int id)
         {
-          return (_context.SinhVien?.Any(e => e.MaSinhVien == id)).GetValueOrDefault();
+          return (_context.DiemRenLuyen?.Any(e => e.MaDiemRenLuyen == id)).GetValueOrDefault();
         }
         public async Task<IActionResult> Upload(){
             return View();
@@ -228,18 +222,14 @@ namespace QuanLyDiem.Controllers
                         var dt = _excelProcess.ExcelToDataTable(fileLocation);
                         for (int i = 0; i < dt.Rows.Count; i++)
                         {
-                            var sinhVien = new SinhVien()
+                            var diemRenLuyen = new DiemRenLuyen()
                             {
                                 MaSinhVien = dt.Rows[i][0].ToString(),
-                                TenSinhVien = dt.Rows[i][1].ToString(),
-                                GioiTinh = dt.Rows[i][2].ToString(),
-                                NgaySinh = Convert.ToDateTime(dt.Rows[i][3]),
-                                TinhTrang = dt.Rows[i][4].ToString(),
-                                MaChuyenNganh = dt.Rows[i][5].ToString(),
-                                MaKhoaHoc = dt.Rows[i][6].ToString(),
+                                MaHocKy = dt.Rows[i][1].ToString(),
+                                DiemRL = Convert.ToInt32(dt.Rows[i][2])
                             };
 
-                            _context.Add(sinhVien);
+                            _context.Add(diemRenLuyen);
                         }
                         await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(Index));
@@ -256,26 +246,20 @@ namespace QuanLyDiem.Controllers
                 ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
                 worksheet.Cells["A1"].Value = "MaSinhVien";
                 worksheet.Cells["B1"].Value = "TenSinhVien";
-                worksheet.Cells["C1"].Value = "GioiTinh";
-                worksheet.Cells["D1"].Value = "NgaySinh";
-                worksheet.Cells["E1"].Value = "TinhTrang";
-                worksheet.Cells["F1"].Value = "ChuyenNganh";
-                worksheet.Cells["G1"].Value = "KhoaHoc";
+                worksheet.Cells["C1"].Value = "HocKy";
+                worksheet.Cells["D1"].Value = "DiemRL";
 
                 // Get only the properties you want to include
-                var sinhVienList = _context.SinhVien
+                var diemRenLuyenList = _context.DiemRenLuyen
                     .Select(b => new
                     {
                         b.MaSinhVien,
-                        b.TenSinhVien,
-                        b.GioiTinh,
-                        NgaySinh = b.NgaySinh.ToString("dd/MM/yyyy"),
-                        b.TinhTrang,
-                        b.ChuyenNganh.TenChuyenNganh,
-                        b.KhoaHoc.TenKhoaHoc,
+                        b.SinhVien.TenSinhVien,
+                        b.HocKy.TenHocKy,
+                        b.DiemRL,
                     })
                 .ToList();
-                worksheet.Cells["A2"].LoadFromCollection(sinhVienList);
+                worksheet.Cells["A2"].LoadFromCollection(diemRenLuyenList);
                 var stream = new MemoryStream(excelPackage.GetAsByteArray());
                 return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }

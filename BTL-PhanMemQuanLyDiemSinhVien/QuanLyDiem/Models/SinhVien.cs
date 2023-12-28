@@ -23,5 +23,6 @@ namespace QuanLyDiem.Models
         public int SoTinChiTichLuy {get; set;}
         public List<BangDiem>? BangDiem { get; set; }
         public List<HocPhan>? HocPhan { get; set; }
+        public List<DiemRenLuyen>? DiemRenLuyen { get; set; }
     }
 }

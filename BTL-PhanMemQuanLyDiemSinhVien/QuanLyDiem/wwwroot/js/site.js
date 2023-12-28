@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function openModal(id) {
       // Sử dụng AJAX để gửi yêu cầu lấy thông tin chi tiết từ server
       $.ajax({
-          url: '/BangDiem/Details/' + id, // Điều chỉnh đường dẫn theo đúng định dạng URL của ứng dụng ASP.NET Core
+          url: '/BangDiem/Details/' + id,
           type: 'GET',
           success: function (data) {
               // Nạp dữ liệu vào modal
